@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_08_012417) do
+ActiveRecord::Schema.define(version: 2020_03_08_095956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,17 @@ ActiveRecord::Schema.define(version: 2020_03_08_012417) do
     t.index ["language_id"], name: "index_lessons_on_language_id"
     t.index ["teacher_id"], name: "index_lessons_on_teacher_id"
     t.index ["time_table_id"], name: "index_lessons_on_time_table_id"
+  end
+
+  create_table "reservations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "lesson_id", null: false
+    t.date "date", null: false
+    t.string "zoom_url", default: "", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lesson_id"], name: "index_reservations_on_lesson_id"
+    t.index ["user_id"], name: "index_reservations_on_user_id"
   end
 
   create_table "teachers", force: :cascade do |t|
@@ -70,4 +81,6 @@ ActiveRecord::Schema.define(version: 2020_03_08_012417) do
   add_foreign_key "lessons", "languages"
   add_foreign_key "lessons", "teachers"
   add_foreign_key "lessons", "time_tables"
+  add_foreign_key "reservations", "lessons"
+  add_foreign_key "reservations", "users"
 end
