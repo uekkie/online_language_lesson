@@ -4,9 +4,9 @@ class ApplicationController < ActionController::Base
   # ログイン後のリダイレクト先
   def after_sign_in_path_for(resource_or_scope)
     if resource_or_scope.is_a?(Teacher)
-      teacher_path(current_teacher)
+      lessons_path
     else
-      root_path
+      reservations_path
     end
   end
 

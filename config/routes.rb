@@ -17,4 +17,7 @@ Rails.application.routes.draw do
   resources :users
   resources :teachers
   resources :lessons
+  resources :reservations
+
+  resources :languages, only: [:index]
 end
