@@ -1,0 +1,20 @@
+%h1= "#{@language.name}の選択可能なレッスン一覧"
+
+%p 受講したいレッスン枠を選択して「予約画面へ」を押してください。
+
+%table.table.table-striped
+  %thead
+    %th 講師
+    %th レッスン枠
+    %th
+
+  %tbody
+    - @lessons.each do |lesson|
+      %tr
+        %td
+          = lesson.teacher.name
+        %td
+          = l(lesson.time_table.start_time, format: :time_only)
+        %td
+          = link_to '予約画面へ', new_reservation_path({params: {lesson_id: lesson.id}})
+
