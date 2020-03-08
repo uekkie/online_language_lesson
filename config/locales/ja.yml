@@ -2,4 +2,6 @@ ja:
   activerecord:
     model:
       language: 言語
-
+  time:
+    formats:
+      time_only: "%H:%M〜"

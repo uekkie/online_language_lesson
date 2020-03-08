@@ -1,18 +1,21 @@
-%h1 Listing lessons
+%h1 レッスン一覧
 
-%table
+%table.table.table-striped
   %thead
     %tr
-      %th
-      %th
+      %th 言語
+      %th 時間
       %th
 
   %tbody
     - @lessons.each do |lesson|
       %tr
-        %td= link_to 'Show', lesson
-        %td= link_to 'Edit', edit_lesson_path(lesson)
-        %td= link_to 'Destroy', lesson, method: :delete, data: { confirm: 'Are you sure?' }
+        %td= lesson.language.name
+        %td= l(lesson.time_table.start_time, format: :time_only)
+
+        %td
+          = link_to '編集', edit_lesson_path(lesson)
+          = link_to '削除', lesson, method: :delete, data: { confirm: 'Are you sure?' }
 
 %br
 
