@@ -11,16 +11,17 @@ class ReservationsController < ApplicationController
 
   def new
     @reservation = Reservation.new
+    @lesson = Lesson.find(params[:lesson_id])
   end
 
   def edit
   end
 
   def create
-    @reservation = Reservation.new(reservation_params)
+    @reservation = current_user.reservations.build(reservation_params)
 
     if @reservation.save
-      redirect_to @reservation, notice: 'Reservation was successfully created.'
+      redirect_to reservation_url(@reservation), notice: '予約を承りました'
     else
       render :new
     end
@@ -46,6 +47,6 @@ class ReservationsController < ApplicationController
   end
 
   def reservation_params
-    params.fetch(:reservation, {})
+    params.require(:reservation).permit(:lesson_id, :date)
   end
 end

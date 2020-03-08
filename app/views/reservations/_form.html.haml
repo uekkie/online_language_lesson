@@ -4,6 +4,11 @@
   = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
 
   .form-inputs
+    = f.input :lesson_id, as: :hidden, input_html: {value: @lesson.id}
+    = @lesson.teacher.name
+    = l( @lesson.time_table.start_time, format: :time_only)
+  .form-inputs
+    = f.input :date, as: :date
 
   .form-actions
     = f.button :submit

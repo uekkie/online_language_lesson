@@ -1,2 +1,7 @@
-%h1 Languages#index
-%p Find me in app/views/languages/index.html.haml
+%h1 言語の選択
+
+%ul.list-group
+  - @languages.each do |language|
+    %li.list-group-item
+      = link_to language.name, language_lessons_path(language)
+

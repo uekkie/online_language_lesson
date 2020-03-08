@@ -17,7 +17,13 @@ Rails.application.routes.draw do
   resources :users
   resources :teachers
   resources :lessons
-  resources :reservations
 
-  resources :languages, only: [:index]
+  resources :reservations, only: %i[index show new create] do
+    resources :lessons, controller: "reservations/lessons"
+  end
+
+  resources :languages, only: %i[index show] do
+    resources :lessons, only: %i[index], controller: "languages/lessons"
+    resources :reservations, only: %i[index]
+  end
 end

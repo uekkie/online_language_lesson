@@ -10,9 +10,8 @@
   %tbody
     - @reservations.each do |reservation|
       %tr
+        %td= reservation.lesson.summary
         %td= link_to 'Show', reservation
-        %td= link_to 'Edit', edit_reservation_path(reservation)
-        %td= link_to 'Destroy', reservation, method: :delete, data: { confirm: 'Are you sure?' }
 
 %br
 
