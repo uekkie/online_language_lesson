@@ -28,6 +28,7 @@ module OnlineLanguageLesson
       g.request_specs false
       g.assets false
       g.helper false
+      g.jbuilder = false
     end
   end
 end

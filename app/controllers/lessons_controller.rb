@@ -1,4 +1,5 @@
 class LessonsController < ApplicationController
+  before_action :authenticate_teacher!
   before_action :set_lesson, only: [:show, :edit, :update, :destroy]
 
   def index
