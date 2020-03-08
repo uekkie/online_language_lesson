@@ -5,6 +5,6 @@ class CreateLanguages < ActiveRecord::Migration[6.0]
 
       t.timestamps
     end
-    add_index :languages, :name,           unique: true
+    add_index :languages, :name,  ``         unique: true
   end
 end

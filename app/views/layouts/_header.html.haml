@@ -1,0 +1,12 @@
+%nav.navbar.navbar-light.bg-light
+  - if user_signed_in? || teacher_signed_in?
+    = link_to '外国語レッスン', root_path, class: 'nav-item active'
+    -#= link_to 'ユーザー一覧', users_path, class: 'nav-item nav-link'
+    - if user_signed_in?
+      = link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'nav-item nav-link'
+    - if teacher_signed_in?
+      = link_to 'ログアウト', destroy_teacher_session_path, method: :delete, class: 'nav-item nav-link'
+  - else
+    = link_to '生徒ログイン', new_user_session_path, class: 'nav-item nav-link'
+    = link_to '講師ログイン', new_teacher_session_path, class: 'nav-item nav-link'
+
