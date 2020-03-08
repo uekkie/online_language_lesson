@@ -1,10 +1,10 @@
-= form_for @lesson do |f|
-  - if @lesson.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@lesson.errors.count, "error")} prohibited this lesson from being saved:"
-      %ul
-        - @lesson.errors.full_messages.each do |message|
-          %li= message
+= simple_form_for(@lesson) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
 
-  .actions
-    = f.submit 'Save'
+  .form-inputs
+    = f.input :language_id, as: :select, collection: Language.all
+  .form-inputs
+    = f.input :time_table_id, as: :select, collection: TimeTable.all.map{ |t| [ l(t.start_time, format: :time_only),t.id]}, label_method: :first, value_method: :second
+  .form-actions
+    = f.button :submit, class: "btn btn-primary"
