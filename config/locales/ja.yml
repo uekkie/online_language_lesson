@@ -1,0 +1,5 @@
+ja:
+  activerecord:
+    model:
+      language: 言語
+
