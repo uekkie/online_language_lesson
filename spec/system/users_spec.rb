@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :system do
-  before do
-    driven_by(:rack_test)
-  end
-
   let!(:user) { create(:user) }
 
   it "ログイン後、予約一覧画面にリダイレクトされる" do
