@@ -26,4 +26,6 @@ Rails.application.routes.draw do
     resources :lessons, only: %i[index], controller: "languages/lessons"
     resources :reservations, only: %i[index]
   end
+
+  resources :charges
 end
