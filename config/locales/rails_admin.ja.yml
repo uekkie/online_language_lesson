@@ -77,7 +77,7 @@ ja:
         menu: 新規作成
         breadcrumb: 新規
         link: "新規 %{model_label} を作成"
-        done: 作成しました
+        done: 作成
       edit:
         title: "%{model_label} '%{object_label}' の編集"
         menu: 編集
