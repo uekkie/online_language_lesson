@@ -1,0 +1,15 @@
+= form_tag charges_path do |f|
+  %script{ src:"https://checkout.stripe.com/checkout.js",
+    class: "stripe-button",
+    data: { key: Rails.configuration.stripe[:publishable_key],
+      amount: "2000",
+      currency:"jpy",
+      label: "1回分"}}
+
+  %script{ src:"https://checkout.stripe.com/checkout.js",
+    class: "stripe-button",
+    data: { key: Rails.configuration.stripe[:publishable_key],
+      amount: "4000",
+      currency:"jpy",
+      label: "2回分"}}
+

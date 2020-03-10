@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_08_095956) do
+ActiveRecord::Schema.define(version: 2020_03_10_082021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,14 @@ ActiveRecord::Schema.define(version: 2020_03_08_095956) do
     t.index ["reset_password_token"], name: "index_teachers_on_reset_password_token", unique: true
   end
 
+  create_table "ticket_balances", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "amount", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_ticket_balances_on_user_id"
+  end
+
   create_table "time_tables", force: :cascade do |t|
     t.time "start_time", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -83,4 +91,5 @@ ActiveRecord::Schema.define(version: 2020_03_08_095956) do
   add_foreign_key "lessons", "time_tables"
   add_foreign_key "reservations", "lessons"
   add_foreign_key "reservations", "users"
+  add_foreign_key "ticket_balances", "users"
 end
