@@ -1,5 +1,15 @@
 %script{ src: "https://js.stripe.com/v3/" }
 
+- if @user.has_customer_id?
+  = form_with url: charges_path do |f|
+    .form-row
+      以前と同じカードで支払う場合はこちらから。
+      = f.hidden_field :use_registerd_id, value: 1
+      .form-inputs
+        = f.select :coupon_id, Coupon.all.map { |coupon| [coupon.name, coupon.id] }, {}, {class: 'form-control'}
+    = f.submit '登録済みのカードで支払う', class: 'btn btn-success'
+
+
 = form_with url: charges_path, id: "payment-form" do |f|
   .form-row
     %label{ for:"card-element" }
