@@ -15,4 +15,6 @@
 
 %br
 
+= "チケット残高：#{current_user.calc_ticket_balance}回"
 = link_to 'レッスンを予約する', languages_path
+= link_to 'チケット購入', new_charge_path
