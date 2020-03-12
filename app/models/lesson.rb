@@ -5,7 +5,11 @@ class Lesson < ApplicationRecord
 
   scope :recent, -> { order(created_at: :desc) }
 
+  def start_at
+    I18n.l(time_table.start_time, format: :time_only)
+  end
+
   def summary
-    "#{teacher.name}先生の#{language.name}レッスン #{I18n.l(time_table.start_time, format: :time_only)}"
+    "#{teacher.name}先生の#{language.name}レッスン #{start_at}"
   end
 end
