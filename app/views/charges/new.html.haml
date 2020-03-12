@@ -1,15 +1,67 @@
-= form_tag charges_path do |f|
-  %script{ src:"https://checkout.stripe.com/checkout.js",
-    class: "stripe-button",
-    data: { key: Rails.configuration.stripe[:publishable_key],
-      amount: "2000",
-      currency:"jpy",
-      label: "1回分"}}
+%script{ src: "https://js.stripe.com/v3/" }
 
-  %script{ src:"https://checkout.stripe.com/checkout.js",
-    class: "stripe-button",
-    data: { key: Rails.configuration.stripe[:publishable_key],
-      amount: "4000",
-      currency:"jpy",
-      label: "2回分"}}
+= form_with url: charges_path, id: "payment-form" do |f|
+  .form-row
+    %label{ for:"card-element" }
+      クレジット・デビットカード番号
+    #card-element.mt-1{ style: 'width: 500px' }
+    #card-errors{ role: "alert" }
+    .form-inputs
+      = f.select :ticket_id, @tickets.map { |ticket| [ticket.name, ticket.id] }, {}, {class: 'form-control'}
+    -# = f.input :ticket_id, as: :select, collection: @tickets, label_method: :first, value_method: :second
+  %button.mt-1{class:"btn btn-success"} お支払い
 
+:javascript
+  var stripe = Stripe('#{Rails.configuration.stripe[:publishable_key]}');
+  var elements = stripe.elements();
+  var style = {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+  var card = elements.create('card', {style: style, hidePostalCode: true});
+  card.mount('#card-element');
+
+  card.addEventListener('change', function(event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+
+  var form = document.getElementById('payment-form');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function(result) {
+      if (result.error) {
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+
+  function stripeTokenHandler(token) {
+    var form = document.getElementById('payment-form');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+
+    form.submit();
+  }
