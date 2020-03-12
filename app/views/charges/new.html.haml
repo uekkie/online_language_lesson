@@ -8,7 +8,6 @@
     #card-errors{ role: "alert" }
     .form-inputs
       = f.select :coupon_id, Coupon.all.map { |coupon| [coupon.name, coupon.id] }, {}, {class: 'form-control'}
-    -# = f.input :ticket_id, as: :select, collection: @tickets, label_method: :first, value_method: :second
   %button.mt-1{class:"btn btn-success"} お支払い
 
 :javascript
