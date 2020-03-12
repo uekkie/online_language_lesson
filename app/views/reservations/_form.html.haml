@@ -16,4 +16,11 @@
     label_method: :first, value_method: :second
 
   .form-actions
-    = f.button :submit, class: 'btn btn-primary'
+    - if current_user.ticket_balance_empty?
+      %p{ class: 'btn btn-secondary'}  予約する
+      %p
+        チケット残高がありません。
+        = link_to 'チケットを購入', new_charge_path
+        してください。
+    - else
+      = f.button :submit, "予約する", class: 'btn btn-primary'
