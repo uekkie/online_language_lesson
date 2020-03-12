@@ -21,6 +21,7 @@ gem 'devise-i18n-views'
 gem 'rails_admin', '~> 2.0'
 gem 'simple_form'
 gem 'stripe'
+gem 'active_hash'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

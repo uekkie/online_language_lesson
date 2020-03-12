@@ -7,7 +7,7 @@
     #card-element.mt-1{ style: 'width: 500px' }
     #card-errors{ role: "alert" }
     .form-inputs
-      = f.select :ticket_id, @tickets.map { |ticket| [ticket.name, ticket.id] }, {}, {class: 'form-control'}
+      = f.select :coupon_id, Coupon.all.map { |coupon| [coupon.name, coupon.id] }, {}, {class: 'form-control'}
     -# = f.input :ticket_id, as: :select, collection: @tickets, label_method: :first, value_method: :second
   %button.mt-1{class:"btn btn-success"} お支払い
 
