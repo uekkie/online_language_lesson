@@ -1,6 +1,7 @@
 class ReservationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
+  before_action :pay_ticket, only: :create
 
   def index
     @reservations = current_user.reservations.recent
@@ -48,5 +49,10 @@ class ReservationsController < ApplicationController
 
   def reservation_params
     params.require(:reservation).permit(:lesson_id, :date)
+  end
+
+  def pay_ticket
+    raise BadRequest, 'チケット残高がありません' if current_user.ticket_balance_empty?
+    current_user.ticket_balances.create(amount: -1)
   end
 end
