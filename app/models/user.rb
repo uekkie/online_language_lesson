@@ -26,6 +26,6 @@ class User < ApplicationRecord
   end
 
   def calc_ticket_balance
-    ticket_balances.inject(0) { |result, t| result += t.amount  }
+    ticket_balances.sum(:amount)
   end
 end
