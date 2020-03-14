@@ -1,7 +1,5 @@
-%p#notice= notice
+%h1= @teacher.name
 
-= link_to 'レッスン登録', new_lesson_path
-
-= link_to 'Edit', edit_teacher_path(@teacher)
+= link_to '編集', edit_teacher_path(@teacher)
 \|
-= link_to 'Back', teachers_path
+= link_to 'もどる', teachers_path

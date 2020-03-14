@@ -7,8 +7,15 @@
       = link_to '予約の確認', reservations_path, class: 'nav-item nav-link'
       = link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'nav-item nav-link'
     - if teacher_signed_in?
-      = "#{current_teacher.name} （講師）"
-      = link_to '予約の確認', reservations_teachers_path, class: 'nav-item nav-link'
+      - if current_teacher.admin?
+        -if session[:teacher_agent].present?
+          = "代理ログイン中（#{session[:teacher_agent]}）"
+          = link_to '予約の確認', reservations_teachers_path, class: 'nav-item nav-link'
+        = "#{current_teacher.name} （管理者）"
+        = link_to '講師の管理', teachers_path, class: 'nav-item nav-link'
+      - else
+        = "#{current_teacher.name} （講師）"
+        = link_to '予約の確認', reservations_teachers_path, class: 'nav-item nav-link'
       = link_to 'ログアウト', destroy_teacher_session_path, method: :delete, class: 'nav-item nav-link'
   - else
     = link_to '生徒ログイン', new_user_session_path, class: 'nav-item nav-link'

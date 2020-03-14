@@ -1,10 +1,12 @@
-= form_for @teacher do |f|
-  - if @teacher.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@teacher.errors.count, "error")} prohibited this teacher from being saved:"
-      %ul
-        - @teacher.errors.full_messages.each do |message|
-          %li= message
+= simple_form_for @teacher do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
 
-  .actions
-    = f.submit 'Save'
+  .form-inputs
+    = f.input :name
+    = f.input :email
+    = f.input :password
+    = f.input :password_confirmation
+
+  .form-actions
+    = f.button :submit
