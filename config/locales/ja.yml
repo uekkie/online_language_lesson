@@ -7,6 +7,8 @@ ja:
       lesson:
         language_id: 言語
         time_table_id: 開始時間
+      reservation:
+        date: 受講日
   time:
     formats:
       time_only: "%H:%M〜"

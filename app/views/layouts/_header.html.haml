@@ -1,6 +1,6 @@
 %nav.navbar.navbar-light.bg-light
+  = link_to 'Learn.Lang', root_path, class: 'nav-item active'
   - if user_signed_in? || teacher_signed_in?
-    = link_to '外国語レッスン', root_path, class: 'nav-item active'
     -#= link_to 'ユーザー一覧', users_path, class: 'nav-item nav-link'
     - if user_signed_in?
       = "#{current_user.name} （生徒）"
