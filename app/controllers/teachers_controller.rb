@@ -1,8 +1,8 @@
 class TeachersController < ApplicationController
-  before_action :set_teacher, only: [:show, :edit, :update, :destroy]
+  before_action :set_teacher, only: %i[show edit update destroy sign_in]
 
   def index
-    @teachers = Teacher.all
+    @teachers = Teacher.without_admin
   end
 
   def show
@@ -18,47 +18,54 @@ class TeachersController < ApplicationController
   def create
     @teacher = Teacher.new(teacher_params)
 
-    respond_to do |format|
-      if @teacher.save
-        format.html { redirect_to @teacher, notice: 'Teacher was successfully created.' }
-        format.json { render :show, status: :created, location: @teacher }
-      else
-        format.html { render :new }
-        format.json { render json: @teacher.errors, status: :unprocessable_entity }
-      end
+    if @teacher.save
+      redirect_to @teacher, notice: 'Teacher was successfully created.'
+    else
+      render :new
     end
   end
 
   def update
-    respond_to do |format|
-      if @teacher.update(teacher_params)
-        format.html { redirect_to @teacher, notice: 'Teacher was successfully updated.' }
-        format.json { render :show, status: :ok, location: @teacher }
-      else
-        format.html { render :edit }
-        format.json { render json: @teacher.errors, status: :unprocessable_entity }
-      end
+    if @teacher.update(teacher_params)
+      redirect_to @teacher, notice: 'Teacher was successfully updated.'
+    else
+      render :edit
     end
   end
 
   def destroy
-    @teacher.destroy
-    respond_to do |format|
-      format.html { redirect_to teachers_url, notice: 'Teacher was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    @teacher.destroy!
+    redirect_to teachers_url, notice: 'Teacher was successfully destroyed.'
   end
 
   def reservations
-    @reservations = current_teacher.reservations
+    @reservations = current_teacher_reservations
+  end
+
+  def sign_in
+    if current_teacher.admin?
+      session[:teacher_agent] = @teacher.id
+    end
+    redirect_to root_url
   end
 
   private
-    def set_teacher
-      @teacher = Teacher.find(params[:id])
-    end
 
-    def teacher_params
-      params.fetch(:teacher, {})
+  def set_teacher
+    @teacher = Teacher.find(params[:id])
+  end
+
+  def teacher_params
+    params.fetch(:teacher, {})
+  end
+
+
+  def current_teacher_reservations
+    if current_teacher.admin? && session[:teacher_agent].present?
+      teacher = Teacher.find(session[:teacher_agent])
+      teacher.reservations
+    else
+      current_teacher.reservations
     end
+  end
 end

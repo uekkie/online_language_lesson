@@ -21,6 +21,9 @@ Rails.application.routes.draw do
     collection do
       get :reservations
     end
+    member do
+      get :sign_in
+    end
   end
 
   resources :lessons

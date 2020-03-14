@@ -6,5 +6,6 @@ class Teacher < ApplicationRecord
 
   has_many :lessons
   has_many :reservations
-  #has_many :reserved_lessons, through: :reservations, source: :lesson, class_name: "Lesson"
+
+  scope :without_admin, -> { where(admin: false) }
 end

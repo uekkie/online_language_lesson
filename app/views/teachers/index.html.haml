@@ -1,8 +1,9 @@
-%h1 Listing teachers
+%h1 講師の管理
 
-%table
+%table.table.table-striped
   %thead
     %tr
+      %th
       %th
       %th
       %th
@@ -10,10 +11,11 @@
   %tbody
     - @teachers.each do |teacher|
       %tr
-        %td= link_to 'Show', teacher
-        %td= link_to 'Edit', edit_teacher_path(teacher)
-        %td= link_to 'Destroy', teacher, method: :delete, data: { confirm: 'Are you sure?' }
+        %td= link_to teacher.name, teacher
+        %td= link_to '代理ログイン', sign_in_teacher_path(teacher)
+        %td= link_to '編集', edit_teacher_path(teacher)
+        %td= link_to '削除', teacher, method: :delete, data: { confirm: '削除してよろしいですか？' }
 
 %br
 
-= link_to 'New Teacher', new_teacher_path
+= link_to '講師の追加', new_teacher_path
