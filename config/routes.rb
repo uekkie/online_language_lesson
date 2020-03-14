@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root to: "homes#index"
 
@@ -15,10 +16,19 @@ Rails.application.routes.draw do
   }
 
   resources :users
-  resources :teachers
+
+  resources :teachers do
+    collection do
+      get :reservations
+    end
+  end
+
   resources :lessons
 
   resources :reservations, only: %i[index show new create] do
+    collection do
+      get :select_lesson
+    end
     resources :lessons, controller: "reservations/lessons"
   end
 

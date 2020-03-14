@@ -4,9 +4,11 @@
     -#= link_to 'ユーザー一覧', users_path, class: 'nav-item nav-link'
     - if user_signed_in?
       = "#{current_user.name} （生徒）"
+      = link_to '予約の確認', reservations_path, class: 'nav-item nav-link'
       = link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'nav-item nav-link'
     - if teacher_signed_in?
       = "#{current_teacher.name} （講師）"
+      = link_to '予約の確認', reservations_teachers_path, class: 'nav-item nav-link'
       = link_to 'ログアウト', destroy_teacher_session_path, method: :delete, class: 'nav-item nav-link'
   - else
     = link_to '生徒ログイン', new_user_session_path, class: 'nav-item nav-link'

@@ -18,8 +18,8 @@ class ChargesController < ApplicationController
       :description => "Onlineレッスンチケット #{coupon.name}",
       :currency => "jpy"
     )
-    current_user.ticket_balances.create(
-      amount: coupon.number
+    current_user.coupon_balances.create(
+        number: coupon.number
     )
     redirect_to reservations_url, notice: 'チケットを購入しました'
 

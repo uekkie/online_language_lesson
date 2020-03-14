@@ -3,8 +3,10 @@
   = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
 
   .form-inputs
-    = f.input :language_id, as: :select, collection: Language.all
+    = f.input :language_id, as: :select, collection: Language.all, selected: @lesson.language.present? ? @lesson.language.id : Language.first.id
   .form-inputs
-    = f.input :time_table_id, as: :select, collection: TimeTable.all.map{ |t| [ l(t.start_time, format: :time_only),t.id]}, label_method: :first, value_method: :second
+    = f.input :start_date, as: :datetime, discard_minute: true
+  .form-inputs
+    = f.input :zoom_url
   .form-actions
     = f.button :submit, class: "btn btn-primary"

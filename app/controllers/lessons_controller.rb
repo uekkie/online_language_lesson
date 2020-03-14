@@ -46,6 +46,6 @@ class LessonsController < ApplicationController
   end
 
   def lesson_params
-    params.require(:lesson).permit(:language_id, :time_table_id)
+    params.require(:lesson).permit(:language_id, :start_date, :zoom_url)
   end
 end
