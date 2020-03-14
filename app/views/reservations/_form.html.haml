@@ -5,22 +5,33 @@
 
   .form-inputs
     = f.input :lesson_id, as: :hidden, input_html: {value: @lesson.id}
-    %h3
-      = @lesson.language.name
-      = "（#{Teacher.model_name.human} #{@lesson.teacher.name} 先生）"
-    .lesson
-      = Lesson.model_name.human
-      = l( @lesson.time_table.start_time, format: :time_only)
-  .form-inputs
-    = f.input :date, as: :select, selected: Date.tomorrow,collection: (Date.tomorrow..Date.tomorrow+2.weeks).map{|d| [l(d),d]},
-    label_method: :first, value_method: :second
+    %h3 予約の確認
+
+    %p 以下のレッスンを予約します。
+
+    %table.table.table-striped
+      %thead
+        %th 言語
+        %th 日時
+        %th 講師
+      %tbody
+        %tr
+          %td
+            = @lesson.language.name
+          %td
+            = l( @lesson.start_date, format: :discard_minute)
+          %td
+            = @lesson.teacher.name
+            = f.input :teacher_id, as: :hidden, input_html: {value: @lesson.teacher.id}
 
   .form-actions
-    - if current_user.ticket_balance_empty?
+    - if current_user.coupon_balance_empty?
       %p{ class: 'btn btn-secondary'}  予約する
       %p
         チケット残高がありません。
         = link_to 'チケットを購入', new_charge_path
         してください。
     - else
+      %p
+        = "チケットを1消費します。（#{current_user.calc_coupon_balance}→#{current_user.calc_coupon_balance-1}）"
       = f.button :submit, "予約する", class: 'btn btn-primary'

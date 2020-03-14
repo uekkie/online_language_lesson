@@ -1,25 +1,9 @@
 %h1 レッスン予約一覧
 
-%table.table.table-striped
-  %thead
-    %tr
-      %th 言語
-      %th 受講日
-      %th 講師
+= render 'reservations/reservation_list', reservations: @reservations
 
-  %tbody
-    - @reservations.includes(:lesson).each do |reservation|
-      - lesson = reservation.lesson
-      %tr
-        %td
-          = lesson.language.name
-        %td
-          = l(reservation.date)
-          = lesson.start_at
-        %td
-          = lesson.teacher.name
 %br
 
-= "チケット残高：#{current_user.calc_ticket_balance}回"
-= link_to 'レッスンを予約する', languages_path
+= "チケット残高：#{current_user.calc_coupon_balance}回"
+= link_to 'レッスンを予約する', select_lesson_reservations_path
 = link_to 'チケット購入', new_charge_path

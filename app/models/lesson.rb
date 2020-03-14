@@ -1,12 +1,12 @@
 class Lesson < ApplicationRecord
   belongs_to :teacher
-  belongs_to :time_table
   belongs_to :language
 
   scope :recent, -> { order(created_at: :desc) }
+  scope :latest, -> { order(:start_date)}
 
   def start_at
-    I18n.l(time_table.start_time, format: :time_only)
+    I18n.l(start_date, format: :discard_minute)
   end
 
   def summary

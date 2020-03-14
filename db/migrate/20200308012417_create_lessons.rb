@@ -3,7 +3,8 @@ class CreateLessons < ActiveRecord::Migration[6.0]
     create_table :lessons do |t|
       t.references :teacher, null: false, foreign_key: true
       t.references :language, null: false, foreign_key: true
-      t.references :time_table, null: false, foreign_key: true
+      t.datetime :start_date, null: false
+      t.string :zoom_url, null:false, default: ""
 
       t.timestamps
     end
