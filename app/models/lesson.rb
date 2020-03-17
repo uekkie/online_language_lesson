@@ -1,6 +1,7 @@
 class Lesson < ApplicationRecord
   belongs_to :teacher
   belongs_to :language
+  has_many :reservations, dependent: :destroy
 
   scope :recent, -> { order(created_at: :desc) }
   scope :latest, -> { order(:start_date)}

@@ -12,7 +12,10 @@
       - lesson = reservation.lesson
       %tr
         %td
-          = lesson.language.name
+          - if for_teacher
+            = link_to lesson.language.name, teachers_lesson_path(lesson)
+          - else
+            = lesson.language.name
         %td
           = l(lesson.start_date, format: :discard_minute)
         %td

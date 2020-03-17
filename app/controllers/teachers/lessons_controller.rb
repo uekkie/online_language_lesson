@@ -1,4 +1,4 @@
-class LessonsController < ApplicationController
+class Teachers::LessonsController < ApplicationController
   before_action :authenticate_teacher!
   before_action :set_lesson, only: [:show, :edit, :update, :destroy]
 
@@ -20,7 +20,7 @@ class LessonsController < ApplicationController
     @lesson = current_teacher.lessons.build(lesson_params)
 
     if @lesson.save
-      redirect_to lessons_url, notice: 'レッスンを追加しました'
+      redirect_to teachers_lessons_url, notice: 'レッスンを追加しました'
     else
       render :new
     end
@@ -28,7 +28,7 @@ class LessonsController < ApplicationController
 
   def update
     if @lesson.update(lesson_params)
-      redirect_to lessons_url, notice: 'レッスンを更新しました'
+      redirect_to teachers_lessons_url, notice: 'レッスンを更新しました'
     else
       render :edit
     end
@@ -36,7 +36,7 @@ class LessonsController < ApplicationController
 
   def destroy
     @lesson.destroy!
-    redirect_to lessons_url, notice: 'レッスンを削除しました'
+    redirect_to teachers_lessons_url, notice: 'レッスンを削除しました'
   end
 
 

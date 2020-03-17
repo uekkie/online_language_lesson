@@ -24,6 +24,20 @@ class User < ApplicationRecord
     customer
   end
 
+  def charge(customer, coupon)
+    Stripe::Charge.create(
+        :customer => customer.id,
+        :amount => coupon.price,
+        :description => "Onlineレッスンチケット #{coupon.name}",
+        :currency => "jpy"
+    )
+    self.coupon_balances.create(number: coupon.number)
+    true
+  rescue Stripe::CardError => e
+    flash[:error] = e.message
+    false
+  end
+
   def coupon_balance_empty?
     calc_coupon_balance == 0
   end
