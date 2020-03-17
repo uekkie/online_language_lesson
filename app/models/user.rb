@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :reservations
-  has_many :ticket_balances
+  has_many :coupon_balances
 
   def has_customer_id?
     stripe_customer_id.present?
@@ -24,11 +24,25 @@ class User < ApplicationRecord
     customer
   end
 
-  def ticket_balance_empty?
-    calc_ticket_balance == 0
+  def charge(customer, coupon)
+    Stripe::Charge.create(
+        :customer => customer.id,
+        :amount => coupon.price,
+        :description => "Onlineレッスンチケット #{coupon.name}",
+        :currency => "jpy"
+    )
+    self.coupon_balances.create(number: coupon.number)
+    true
+  rescue Stripe::CardError => e
+    flash[:error] = e.message
+    false
   end
 
-  def calc_ticket_balance
-    ticket_balances.sum(:amount)
+  def coupon_balance_empty?
+    calc_coupon_balance == 0
+  end
+
+  def calc_coupon_balance
+    coupon_balances.sum(:number)
   end
 end
