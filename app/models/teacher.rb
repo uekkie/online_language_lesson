@@ -5,4 +5,7 @@ class Teacher < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :lessons
+  has_many :reservations
+
+  scope :without_admin, -> { where(admin: false) }
 end

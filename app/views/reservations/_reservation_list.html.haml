@@ -1,0 +1,24 @@
+- for_teacher = for_teacher || false
+%table.table.table-striped
+  %thead
+    %tr
+      %th 言語
+      %th 受講日
+      %th
+        = for_teacher ? '生徒' : '講師'
+      %th ZoomのURL
+  %tbody
+    - @reservations.includes(:lesson).each do |reservation|
+      - lesson = reservation.lesson
+      %tr
+        %td
+          - if for_teacher
+            = link_to lesson.language.name, teachers_lesson_path(lesson)
+          - else
+            = lesson.language.name
+        %td
+          = l(lesson.start_date, format: :discard_minute)
+        %td
+          = for_teacher ? reservation.user.name : lesson.teacher.name
+        %td
+          = lesson.zoom_url.present? ? lesson.zoom_url : '指定されていません'

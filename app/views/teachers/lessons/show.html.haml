@@ -1,0 +1,11 @@
+%h1 レッスン情報
+
+.lesson
+  = @lesson.language.name
+  = l(@lesson.start_date, format: :discard_minute)
+  = @lesson.teacher.name
+
+
+= link_to '編集', edit_teachers_lesson_path(@lesson)
+
+= link_to 'もどる', teachers_lessons_path
