@@ -39,6 +39,11 @@ class LessonsController < ApplicationController
     redirect_to lessons_url, notice: 'レッスンを削除しました'
   end
 
+
+  def select_lesson
+    @lessons = Lesson.latest
+  end
+
   private
 
   def set_lesson

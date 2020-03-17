@@ -15,7 +15,17 @@ Rails.application.routes.draw do
       registrations: 'users/registrations'
   }
 
-  resources :users
+
+  namespace :users do
+    resources :lessons, only: [:index]
+    resources :reservations, only: %i[index new create]
+  end
+
+  #resources :users do
+  #  collection do
+  #    get :reservations
+  #  end
+  #end
 
   resources :teachers do
     collection do
@@ -26,12 +36,10 @@ Rails.application.routes.draw do
     end
   end
 
+
   resources :lessons
 
   resources :reservations, only: %i[index show new create] do
-    collection do
-      get :select_lesson
-    end
     resources :lessons, controller: "reservations/lessons"
   end
 
