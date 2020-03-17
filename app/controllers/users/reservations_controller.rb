@@ -1,4 +1,4 @@
-class ReservationsController < ApplicationController
+class Users::ReservationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
   before_action :pay_coupon, only: :create
@@ -8,10 +8,6 @@ class ReservationsController < ApplicationController
   end
 
   def show
-  end
-
-  def select_lesson
-    @lessons = Lesson.latest
   end
 
   def new

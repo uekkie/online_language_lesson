@@ -7,7 +7,7 @@ class HomesController < ApplicationController
         redirect_to lessons_url
       end
     elsif user_signed_in?
-      redirect_to reservations_url
+      redirect_to users_reservations_url
     end
   end
 end
