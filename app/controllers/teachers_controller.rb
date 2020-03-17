@@ -38,10 +38,6 @@ class TeachersController < ApplicationController
     redirect_to teachers_url, notice: 'Teacher was successfully destroyed.'
   end
 
-  def reservations
-    @reservations = current_teacher_reservations
-  end
-
   def sign_in
     if current_teacher.admin?
       session[:teacher_agent] = @teacher.id
@@ -57,15 +53,5 @@ class TeachersController < ApplicationController
 
   def teacher_params
     params.fetch(:teacher, {})
-  end
-
-
-  def current_teacher_reservations
-    if current_teacher.admin? && session[:teacher_agent].present?
-      teacher = Teacher.find(session[:teacher_agent])
-      teacher.reservations
-    else
-      current_teacher.reservations
-    end
   end
 end

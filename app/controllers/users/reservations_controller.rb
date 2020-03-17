@@ -1,6 +1,6 @@
 class Users::ReservationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_reservation, only: [:show, :edit, :update, :destroy]
+  before_action :set_reservation, only: %i[show edit]
   before_action :pay_coupon, only: :create
 
   def index
@@ -22,23 +22,10 @@ class Users::ReservationsController < ApplicationController
     @reservation = current_user.reservations.build(reservation_params)
 
     if @reservation.save
-      redirect_to reservation_url(@reservation), notice: '予約を承りました'
+      redirect_to users_reservations_url, notice: '予約を承りました'
     else
       render :new
     end
-  end
-
-  def update
-    if @reservation.update(reservation_params)
-      redirect_to @reservation, notice: 'Reservation was successfully updated.'
-    else
-      render :edit
-    end
-  end
-
-  def destroy
-    @reservation.destroy
-    redirect_to reservations_url, notice: 'Reservation was successfully destroyed.'
   end
 
   private

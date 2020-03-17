@@ -1,5 +1,5 @@
 -# frozen_string_literal: true
-= simple_form_for(@reservation) do |f|
+= simple_form_for(@reservation, url:users_reservations_path) do |f|
   = f.error_notification
   = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
 
@@ -29,7 +29,7 @@
       %p{ class: 'btn btn-secondary'}  予約する
       %p
         チケット残高がありません。
-        = link_to 'チケットを購入', new_charge_path
+        = link_to 'チケットを購入', new_users_charge_path
         してください。
     - else
       %p
