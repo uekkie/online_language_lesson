@@ -9,6 +9,9 @@ ja:
         time_table_id: 開始時間
       reservation:
         date: 受講日
+      teacher:
+        avatar: アバター
+        introduce: 自己紹介
   time:
     formats:
       discard_minute: "%Y年%m月%d日(%a) %H時〜"

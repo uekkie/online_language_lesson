@@ -28,13 +28,15 @@ Rails.application.routes.draw do
 
 
   devise_scope :teacher do
-    resources :teachers do
+    resources :teachers, only: [] do
       get "masquerade", to: "teachers/sessions#masquerade_sign_in", on: :member
     end
     get "back_to_owner", to: "teachers/sessions#back_to_owner"
   end
 
-  resources :teachers
+  resources :teachers, only: %i[index new create update edit destroy] do
+    get :profile, action: :profile, on: :collection
+  end
 
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: '/lo'

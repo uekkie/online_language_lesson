@@ -1,4 +1,4 @@
-class UserMailer < ApplicationMailer
+class TeacherMailer < ApplicationMailer
   default from: 'hirocueki@gmail.com'
 
   def accept_lesson(reservation)
