@@ -15,7 +15,6 @@ Rails.application.routes.draw do
       registrations: 'users/registrations'
   }
 
-
   namespace :users do
     resources :lessons, only: [:index]
     resources :reservations, only: %i[index new create]
@@ -27,9 +26,18 @@ Rails.application.routes.draw do
     resources :lessons
   end
 
-  resources :teachers do
-    member do
-      get :sign_in
+
+  devise_scope :teacher do
+    resources :teachers do
+      get "masquerade", to: "teachers/sessions#masquerade_sign_in", on: :member
     end
+    get "back_to_owner", to: "teachers/sessions#back_to_owner"
+  end
+
+  resources :teachers do
+  #   member do
+  #     get "masquerade", to: "teachers/sessions#masquerade_sign_in"
+  #     # get :sign_in
+  #   end
   end
 end
