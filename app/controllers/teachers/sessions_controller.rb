@@ -2,6 +2,8 @@
 
 class Teachers::SessionsController < Devise::SessionsController
   before_action :configure_sign_in_params, only: [:create]
+  before_action :authenticate_teacher!, only: %i[masquerade_sign_in]
+  before_action :signed_in_admin, only: %i[masquerade_sign_in]
 
   def masquerade_sign_in
     teacher = Teacher.find(params[:id])
@@ -11,7 +13,7 @@ class Teachers::SessionsController < Devise::SessionsController
   end
 
 
-  def back_to_owner()
+  def back_to_owner
     raise 'Failed. Masquerade signed in id not found.' unless session[:admin_id].present?
     admin = Teacher.find(session[:admin_id])
     bypass_sign_in(admin)
@@ -23,5 +25,11 @@ class Teachers::SessionsController < Devise::SessionsController
 
   def configure_sign_in_params
    devise_parameter_sanitizer.permit(:sign_in, keys: [:name])
+  end
+
+  def signed_in_admin
+    unless current_teacher.admin?
+      redirect_to root_url, alert: 'この操作は管理者のみが実行できます'
+    end
   end
 end
