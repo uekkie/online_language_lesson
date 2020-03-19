@@ -34,10 +34,9 @@ Rails.application.routes.draw do
     get "back_to_owner", to: "teachers/sessions#back_to_owner"
   end
 
-  resources :teachers do
-  #   member do
-  #     get "masquerade", to: "teachers/sessions#masquerade_sign_in"
-  #     # get :sign_in
-  #   end
+  resources :teachers
+
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: '/lo'
   end
 end
