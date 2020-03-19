@@ -38,13 +38,6 @@ class TeachersController < ApplicationController
     redirect_to teachers_url, notice: 'Teacher was successfully destroyed.'
   end
 
-  def sign_in
-    if current_teacher.admin?
-      session[:teacher_agent] = @teacher.id
-    end
-    redirect_to root_url
-  end
-
   private
 
   def set_teacher

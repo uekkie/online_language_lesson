@@ -12,7 +12,7 @@
     - @teachers.each do |teacher|
       %tr
         %td= link_to teacher.name, teacher
-        %td= link_to '代理ログイン', sign_in_teacher_path(teacher)
+        %td= link_to '代理ログイン', masquerade_teacher_path(teacher)
         %td= link_to '編集', edit_teacher_path(teacher)
         %td= link_to '削除', teacher, method: :delete, data: { confirm: '削除してよろしいですか？' }
 
