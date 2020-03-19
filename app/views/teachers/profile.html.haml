@@ -1,0 +1,10 @@
+#avatar_name
+  %span
+    = link_to @teacher.avatar_url, target: :_blank do
+      = image_tag @teacher.avatar_url(:thumbnail), class: 'rounded img-thumbnail' if @teacher.avatar.present?
+  = @teacher.name
+
+%h4 自己紹介
+.introduce.p-2.border= @teacher.introduce
+
+= link_to '編集', edit_teacher_path(@teacher)

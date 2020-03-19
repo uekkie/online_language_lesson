@@ -1,11 +1,8 @@
 class TeachersController < ApplicationController
-  before_action :set_teacher, only: %i[show edit update destroy sign_in]
+  before_action :set_teacher, only: %i[edit update destroy]
 
   def index
     @teachers = Teacher.without_admin
-  end
-
-  def show
   end
 
   def new
@@ -38,6 +35,10 @@ class TeachersController < ApplicationController
     redirect_to teachers_url, notice: 'Teacher was successfully destroyed.'
   end
 
+  def profile
+    @teacher = current_teacher
+  end
+
   private
 
   def set_teacher
@@ -45,6 +46,6 @@ class TeachersController < ApplicationController
   end
 
   def teacher_params
-    params.fetch(:teacher, {})
+    params.require(:teacher).permit(:name, :email, :introduce, :avatar_url)
   end
 end

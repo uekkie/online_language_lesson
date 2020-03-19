@@ -23,6 +23,9 @@ gem 'simple_form'
 gem 'stripe'
 gem 'active_hash'
 
+gem 'carrierwave'
+gem 'cloudinary'
+
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'bullet'

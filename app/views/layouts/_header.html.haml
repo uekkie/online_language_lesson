@@ -15,6 +15,7 @@
       - else
         = "#{current_teacher.name} （講師）"
         = link_to '予約の確認', teachers_reservations_path, class: 'nav-item nav-link'
+        = link_to 'プロフィール', profile_teachers_path, class: 'nav-item nav-link'
       = link_to 'ログアウト', destroy_teacher_session_path, method: :delete, class: 'nav-item nav-link'
   - else
     = link_to '生徒ログイン', new_user_session_path, class: 'nav-item nav-link'
