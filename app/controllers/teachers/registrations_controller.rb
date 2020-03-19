@@ -11,11 +11,11 @@ class Teachers::RegistrationsController < Devise::RegistrationsController
   protected
 
   def configure_sign_up_params
-   devise_parameter_sanitizer.permit(:sign_up, keys: %i[name introduce avatar])
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[name avatar introduce])
   end
 
   def configure_account_update_params
-   devise_parameter_sanitizer.permit(:account_update, keys: %i[name introduce avatar])
+    devise_parameter_sanitizer.permit(:account_update, keys: %i[name avatar introduce])
   end
 
   def current_teacher_is_admin?
