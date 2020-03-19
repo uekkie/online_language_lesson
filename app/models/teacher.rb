@@ -10,4 +10,5 @@ class Teacher < ApplicationRecord
   has_many :reservations
 
   scope :without_admin, -> { where(admin: false) }
+
 end

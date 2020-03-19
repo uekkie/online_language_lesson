@@ -34,7 +34,7 @@ Rails.application.routes.draw do
     get "back_to_owner", to: "teachers/sessions#back_to_owner"
   end
 
-  resources :teachers, only: %i[index new create update edit destroy] do
+  resources :teachers, only: %i[index destroy] do
     get :profile, action: :profile, on: :collection
   end
 

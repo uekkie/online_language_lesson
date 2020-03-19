@@ -1,38 +1,16 @@
 class TeachersController < ApplicationController
-  before_action :set_teacher, only: %i[edit update destroy]
+  before_action :authenticate_teacher!
+  before_action :signed_in_admin, except: :profile
+
+  before_action :set_teacher, only: %i[update destroy]
 
   def index
     @teachers = Teacher.without_admin
   end
 
-  def new
-    @teacher = Teacher.new
-  end
-
-  def edit
-  end
-
-  def create
-    @teacher = Teacher.new(teacher_params)
-
-    if @teacher.save
-      redirect_to @teacher, notice: 'Teacher was successfully created.'
-    else
-      render :new
-    end
-  end
-
-  def update
-    if @teacher.update(teacher_params)
-      redirect_to @teacher, notice: 'Teacher was successfully updated.'
-    else
-      render :edit
-    end
-  end
-
   def destroy
     @teacher.destroy!
-    redirect_to teachers_url, notice: 'Teacher was successfully destroyed.'
+    redirect_to teachers_url, notice: '削除しました'
   end
 
   def profile
@@ -45,7 +23,9 @@ class TeachersController < ApplicationController
     @teacher = Teacher.find(params[:id])
   end
 
-  def teacher_params
-    params.require(:teacher).permit(:name, :email, :introduce, :avatar_url)
+  def signed_in_admin
+    unless current_teacher.admin?
+      redirect_to new_teacher_session_url, alert: '管理者でログインしてください'
+    end
   end
 end
