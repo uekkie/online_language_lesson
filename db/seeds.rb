@@ -1,4 +1,4 @@
-if Language.blank?
+if Language.count == 0
   Language.create(name: '英語')
   Language.create(name: 'スペイン語')
   Language.create(name: 'ヒンドゥー語')
