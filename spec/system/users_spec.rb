@@ -13,7 +13,7 @@ RSpec.describe "Users", type: :system do
 
     click_button 'ログイン'
 
-    expect(current_path).to eq reservations_path
+    expect(current_path).to eq users_reservations_path
   end
 
 end
