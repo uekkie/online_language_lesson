@@ -6,6 +6,8 @@ class Lesson < ApplicationRecord
   scope :recent, -> { order(created_at: :desc) }
   scope :latest, -> { order(:start_date)}
 
+  validates :zoom_url, :start_date, presence: true
+
   def start_at
     I18n.l(start_date, format: :discard_minute)
   end
