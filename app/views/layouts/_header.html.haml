@@ -1,6 +1,9 @@
 %nav.navbar.navbar-light.bg-light
   = link_to 'Learn.Lang', root_path, class: 'nav-item active'
-  - if user_signed_in? || teacher_signed_in?
+  - if not_signed_in?
+    = link_to '生徒ログイン', new_user_session_path, class: 'nav-item nav-link'
+    = link_to '講師ログイン', new_teacher_session_path, class: 'nav-item nav-link'
+  - else
     - if user_signed_in?
       = "#{current_user.name} （生徒）"
       = link_to 'レッスン一覧', users_lessons_path, class: 'nav-item nav-link'
@@ -17,7 +20,4 @@
         = link_to '予約の確認', teachers_reservations_path, class: 'nav-item nav-link'
         = link_to 'プロフィール', profile_teachers_path, class: 'nav-item nav-link'
       = link_to 'ログアウト', destroy_teacher_session_path, method: :delete, class: 'nav-item nav-link'
-  - else
-    = link_to '生徒ログイン', new_user_session_path, class: 'nav-item nav-link'
-    = link_to '講師ログイン', new_teacher_session_path, class: 'nav-item nav-link'
 
