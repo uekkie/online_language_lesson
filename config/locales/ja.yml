@@ -8,7 +8,8 @@ ja:
     attributes:
       lesson:
         language_id: 言語
-        time_table_id: 開始時間
+        start_date: 開始日時
+        zoom_url: ZoomのURL
       reservation:
         date: 受講日
       teacher:
