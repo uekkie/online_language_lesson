@@ -6,8 +6,8 @@ class Teacher < ApplicationRecord
 
   mount_uploader :avatar, AvatarUploader
 
-  has_many :lessons
-  has_many :reservations
+  has_many :lessons, dependent: :destroy
+  has_many :reservations, dependent: :destroy
 
   scope :without_admin, -> { where(admin: false) }
 
