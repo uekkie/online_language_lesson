@@ -4,8 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :reservations
-  has_many :coupon_balances
+  has_many :reservations, dependent: :destroy
+  has_many :coupon_balances, dependent: :destroy
 
   def has_customer_id?
     stripe_customer_id.present?
