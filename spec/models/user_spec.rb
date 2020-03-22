@@ -5,7 +5,7 @@ RSpec.describe User, type: :model do
   it 'userを削除すると、userのreservationsも削除されること' do
     user = create(:user)
 
-    user.reservations.create(lesson: lesson, teacher: lesson.teacher)
+    user.reservations.create(lesson: lesson)
     expect(Reservation.count).to eq(1)
 
     expect{ user.destroy }.to change{ Reservation.count }.by(-1)

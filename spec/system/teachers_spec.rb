@@ -19,7 +19,7 @@ RSpec.describe "Teachers", type: :system do
   context "ログインしているとき" do
 
     before { sign_in teacher }
-    let!(:language) { create(:language) }
+    let!(:language) { create(:language, teacher: teacher) }
 
     it "レッスンを追加できる" do
       visit teachers_lessons_path
