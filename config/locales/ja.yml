@@ -5,6 +5,8 @@ ja:
       lesson: レッスン
       teacher: 講師
       user: 生徒
+      reservation: 予約
+      coupon_balance: チケット残高
     attributes:
       lesson:
         language_id: 言語
