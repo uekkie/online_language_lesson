@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   namespace :teachers do
     resources :reservations, only: [:index]
     resources :lessons
+    resources :languages
   end
 
 
@@ -37,6 +38,7 @@ Rails.application.routes.draw do
   resources :teachers, only: %i[index destroy] do
     get :profile, action: :profile, on: :collection
   end
+
 
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: '/lo'

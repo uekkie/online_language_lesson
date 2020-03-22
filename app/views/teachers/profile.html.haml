@@ -4,7 +4,11 @@
       = image_tag @teacher.avatar_url(:thumbnail), class: 'rounded img-thumbnail' if @teacher.avatar.present?
   = @teacher.name
 
-%h4 自己紹介
+%h4.mt-3 自己紹介
 .introduce.p-2.border= @teacher.introduce
 
-= link_to '編集', edit_teacher_registration_path(@teacher)
+%h4.mt-3 レッスン可能な言語
+
+= render 'teachers/languages/language_list', languages: @teacher.languages
+
+= link_to '教えられる言語を追加', new_teachers_language_path
