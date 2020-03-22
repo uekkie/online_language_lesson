@@ -22,7 +22,6 @@
             = l( @lesson.start_date, format: :discard_minute)
           %td
             = @lesson.teacher.name
-            = f.input :teacher_id, as: :hidden, input_html: {value: @lesson.teacher.id}
 
   .form-actions
     - if current_user.coupon_balance_empty?
