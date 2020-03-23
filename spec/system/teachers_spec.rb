@@ -28,13 +28,8 @@ RSpec.describe "Teachers", type: :system do
 
       select language.name, from: "言語"
 
-      within '.lesson_start_date' do
-        select '2020', from: "lesson_start_date_1i"
-        select I18n.l(Date.today, format: '%B'), from: "lesson_start_date_2i"
-        select '21', from: "lesson_start_date_3i"
-        select '7', from: "lesson_start_date_4i", match: :first
-        select '0', from: "lesson_start_date_4i", match: :first
-      end
+      fill_in '日時', with: '2020-03-30'
+      select '7', from: "時刻", match: :first
 
       fill_in 'ZoomのURL', with: 'https://zoom.us/test/12345'
 
