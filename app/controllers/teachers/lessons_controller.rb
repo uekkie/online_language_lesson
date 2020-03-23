@@ -3,6 +3,10 @@ class Teachers::LessonsController < ApplicationController
   before_action :set_lesson, only: [:show, :edit, :update, :destroy]
 
   def index
+    if current_teacher.admin?
+      redirect_to root_path
+    end
+
     @lessons = current_teacher.lessons.recent
   end
 

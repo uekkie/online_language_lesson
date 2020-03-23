@@ -12,7 +12,7 @@
     - @lessons.each do |lesson|
       %tr
         %td= lesson.language.name
-        %td= l(lesson.date)
+        %td= lesson.start_at
         %td= lesson.teacher.name
 
         %td
