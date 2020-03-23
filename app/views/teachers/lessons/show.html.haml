@@ -2,7 +2,7 @@
 
 .lesson
   = @lesson.language.name
-  = l(@lesson.start_date, format: :discard_minute)
+  = @lesson.start_at
   = @lesson.teacher.name
 
 

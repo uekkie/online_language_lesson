@@ -10,7 +10,7 @@
     - lessons.each do |lesson|
       %tr
         %td= lesson.language.name
-        %td= l(lesson.start_date, format: :discard_minute)
+        %td= lesson.start_at
         %td= lesson.teacher.name
 
         %td
