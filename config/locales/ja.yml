@@ -10,13 +10,19 @@ ja:
     attributes:
       lesson:
         language_id: 言語
-        start_date: 開始日時
+        date: 日時
+        hour: 時刻
         zoom_url: ZoomのURL
       reservation:
         date: 受講日
       teacher:
         avatar: アバター
         introduce: 自己紹介
+      language:
+        name: 名前
   time:
     formats:
       discard_minute: "%Y年%m月%d日(%a) %H時〜"
+  date:
+    formats:
+      short_date: "%Y-%m-%d"
