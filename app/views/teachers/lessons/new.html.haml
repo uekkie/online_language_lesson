@@ -1,16 +1,5 @@
 %h1 新しいレッスン
 
-= simple_form_for(@lesson, url: teachers_lessons_path) do |f|
-  = f.error_notification
-  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+= render 'form'
 
-  .form-inputs
-    = f.input :language_id, as: :select, collection: current_teacher.languages.all, selected: current_teacher.languages.first.id
-  .form-inputs
-    = f.input :start_date, as: :datetime, discard_minute: true
-  .form-inputs
-    = f.input :zoom_url
-  .form-actions
-    = f.button :submit, class: "btn btn-primary"
-
-= link_to '戻る', teachers_lessons_path
+= link_to 'キャンセル', teachers_lessons_path
