@@ -13,7 +13,7 @@ RSpec.describe "Teachers", type: :system do
 
     click_button 'ログイン'
 
-    expect(current_path).to eq teachers_lessons_path
+    expect(current_path).to eq teachers_path
   end
 
   context "ログインしているとき" do
