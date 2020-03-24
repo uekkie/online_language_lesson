@@ -23,6 +23,9 @@ gem 'simple_form'
 gem 'stripe'
 gem 'active_hash'
 
+gem 'carrierwave'
+gem 'cloudinary'
+
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'bullet'
@@ -30,6 +33,7 @@ group :development, :test do
   gem 'spring-commands-rspec'
   gem 'factory_bot_rails'
   gem 'dotenv-rails'
+  gem 'faker'
 end
 
 group :development do
@@ -39,6 +43,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem "letter_opener"
+  gem 'letter_opener_web'
 end
 
 group :test do

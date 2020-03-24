@@ -2,4 +2,7 @@
 = render 'lesson_list', lessons: @lessons
 %br
 
-= link_to 'レッスンを追加', new_teachers_lesson_path
+- if current_teacher.languages.count == 0
+  = link_to '教えられる言語の設定', new_teachers_language_path
+- else
+  = link_to 'レッスンを追加', new_teachers_lesson_path

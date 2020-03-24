@@ -34,3 +34,4 @@ yarn-debug.log*
 /.generators
 /.rakeTasks
 /.env
+/public/uploads/tmp/
