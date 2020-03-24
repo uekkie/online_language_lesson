@@ -39,6 +39,8 @@ Rails.application.routes.draw do
     get :profile, action: :profile, on: :collection
   end
 
+  resources :lesson_feedbacks
+
 
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: '/lo'

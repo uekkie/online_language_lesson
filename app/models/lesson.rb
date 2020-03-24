@@ -3,6 +3,8 @@ class Lesson < ApplicationRecord
   belongs_to :language
   has_many :reservations, dependent: :destroy
 
+  has_one :feedback, class_name: 'LessonFeedback' 
+
   scope :recent, -> { order(created_at: :desc) }
   scope :latest, -> { order(:date)}
 
