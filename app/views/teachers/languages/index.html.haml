@@ -1,0 +1,6 @@
+%h1 レッスン可能な言語一覧
+
+= render 'teachers/languages/language_list', languages: @languages, editable: true
+%br
+
+= link_to '教えられる言語を追加', new_teachers_language_path

@@ -22,6 +22,8 @@ class Users::ReservationsController < ApplicationController
     @reservation = current_user.reservations.build(reservation_params)
 
     if @reservation.save
+      UserMailer.accept_lesson(@reservation).deliver_later
+      TeacherMailer.accept_lesson(@reservation).deliver_later
       redirect_to users_reservations_url, notice: '予約を承りました'
     else
       render :new
@@ -35,7 +37,7 @@ class Users::ReservationsController < ApplicationController
   end
 
   def reservation_params
-    params.require(:reservation).permit(:lesson_id, :start_date, :teacher_id)
+    params.require(:reservation).permit(:lesson_id, :start_date)
   end
 
   def pay_coupon

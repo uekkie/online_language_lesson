@@ -3,6 +3,10 @@ class Teachers::LessonsController < ApplicationController
   before_action :set_lesson, only: [:show, :edit, :update, :destroy]
 
   def index
+    if current_teacher.admin?
+      redirect_to root_path
+    end
+
     @lessons = current_teacher.lessons.recent
   end
 
@@ -51,6 +55,6 @@ class Teachers::LessonsController < ApplicationController
   end
 
   def lesson_params
-    params.require(:lesson).permit(:language_id, :start_date, :zoom_url)
+    params.require(:lesson).permit(:language_id, :zoom_url, :date, :hour)
   end
 end

@@ -2,8 +2,12 @@ class ApplicationController < ActionController::Base
   private
 
   def after_sign_in_path_for(resource_or_scope)
-    if resource_or_scope.is_a?(Teacher)
-      teachers_lessons_path
+    if current_teacher
+      if current_teacher.admin?
+        teachers_path
+      else
+        teachers_lessons_path
+      end
     else
       users_reservations_path
     end

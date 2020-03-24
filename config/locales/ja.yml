@@ -3,12 +3,26 @@ ja:
     model:
       language: 言語
       lesson: レッスン
+      teacher: 講師
+      user: 生徒
+      reservation: 予約
+      coupon_balance: チケット残高
     attributes:
       lesson:
         language_id: 言語
-        time_table_id: 開始時間
+        date: 日時
+        hour: 時刻
+        zoom_url: ZoomのURL
       reservation:
         date: 受講日
+      teacher:
+        avatar: アバター
+        introduce: 自己紹介
+      language:
+        name: 名前
   time:
     formats:
-      discard_minute: "%Y年%m月%d日(%a) %H時〜"
+      short_jp: "%Y年%m月%d日"
+  date:
+    formats:
+      short_date: "%Y-%m-%d"

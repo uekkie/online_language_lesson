@@ -12,10 +12,9 @@
     - @lessons.each do |lesson|
       %tr
         %td= lesson.language.name
-        %td= l(lesson.start_date, format: :discard_minute)
+        %td= lesson.start_at
         %td= lesson.teacher.name
 
         %td
           = link_to '予約にすすむ', new_users_reservation_path({params: {lesson_id: lesson.id}})
 
-= link_to '戻る', users_reservations_path

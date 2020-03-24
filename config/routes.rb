@@ -15,7 +15,6 @@ Rails.application.routes.draw do
       registrations: 'users/registrations'
   }
 
-
   namespace :users do
     resources :lessons, only: [:index]
     resources :reservations, only: %i[index new create]
@@ -25,11 +24,23 @@ Rails.application.routes.draw do
   namespace :teachers do
     resources :reservations, only: [:index]
     resources :lessons
+    resources :languages
   end
 
-  resources :teachers do
-    member do
-      get :sign_in
+
+  devise_scope :teacher do
+    resources :teachers, only: [] do
+      get "masquerade", to: "teachers/sessions#masquerade_sign_in", on: :member
     end
+    get "back_to_owner", to: "teachers/sessions#back_to_owner"
+  end
+
+  resources :teachers, only: %i[index destroy] do
+    get :profile, action: :profile, on: :collection
+  end
+
+
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: '/lo'
   end
 end

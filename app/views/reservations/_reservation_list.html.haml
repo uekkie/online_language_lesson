@@ -17,7 +17,7 @@
           - else
             = lesson.language.name
         %td
-          = l(lesson.start_date, format: :discard_minute)
+          = lesson.start_at
         %td
           = for_teacher ? reservation.user.name : lesson.teacher.name
         %td
