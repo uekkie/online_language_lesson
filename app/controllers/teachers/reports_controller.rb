@@ -4,7 +4,7 @@ class Teachers::ReportsController < ApplicationController
   before_action :set_report, only: %i[show edit update destroy]
 
   def index
-    @reports = current_teacher.reports.recent
+    @reports = Report.recent
   end
 
   def show
