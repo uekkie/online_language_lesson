@@ -1,0 +1,13 @@
+%h1 ユーザーページ
+
+%table.table.table-striped.teachers
+  %thead
+    %tr
+      %th レッスン概要
+      %th フィードバックの内容
+
+  %tbody
+    - @lesson_feedbacks.each do |feedback|
+      %tr
+        %td= feedback.lesson.summary
+        %td= feedback.content
