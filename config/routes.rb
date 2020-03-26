@@ -23,8 +23,11 @@ Rails.application.routes.draw do
 
   namespace :teachers do
     resources :reservations, only: [:index]
-    resources :lessons
+    resources :lessons do
+      resources :reports, only: %i[show new create edit update destroy]
+    end
     resources :languages
+    resources :reports, only: %i[index]
   end
 
 

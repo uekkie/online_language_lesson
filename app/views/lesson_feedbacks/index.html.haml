@@ -43,3 +43,4 @@
             = reservation.lesson.summary
           %td
             = link_to 'フィードバックする', new_lesson_feedback_path({ reservation_id: reservation.id })
+            = link_to '申し送りを追加', new_teachers_lesson_report_path(reservation.lesson)
