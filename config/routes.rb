@@ -38,7 +38,9 @@ Rails.application.routes.draw do
     get "back_to_owner", to: "teachers/sessions#back_to_owner"
   end
 
-  resources :users, only: :show
+  resources :users, only: :show do
+    resources :reports, only: :index, controller: "users/reports"
+  end
 
   resources :teachers, only: %i[index destroy] do
     get :profile, action: :profile, on: :collection
