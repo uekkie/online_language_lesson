@@ -3,6 +3,9 @@ class Lesson < ApplicationRecord
   belongs_to :language
   has_one :reservation
   has_one :feedback, class_name: 'LessonFeedback' 
+  has_one :report
+
+  has_one :user, through: :reservation
 
   scope :recent, -> { order(created_at: :desc) }
   scope :latest, -> { order(:date)}

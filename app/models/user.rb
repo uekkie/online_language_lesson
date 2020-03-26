@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :reservations, dependent: :destroy
   has_many :coupon_balances, dependent: :destroy
   has_many :lesson_feedbacks, dependent: :destroy
+  has_many :reports, dependent: :destroy
 
   def has_customer_id?
     stripe_customer_id.present?
