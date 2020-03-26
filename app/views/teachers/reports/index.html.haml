@@ -17,5 +17,6 @@
         %td= report.lesson.language.name
         %td= report.content
         %td
-          = link_to '編集', edit_teachers_lesson_report_path(report.lesson, report)
-          = link_to '削除', teachers_lesson_report_path(report.lesson, report), method: :delete, data: { confirm: '削除してよろしいですか？' }
+          - if current_teacher == report.teacher
+            = link_to '編集', edit_teachers_lesson_report_path(report.lesson, report)
+            = link_to '削除', teachers_lesson_report_path(report.lesson, report), method: :delete, data: { confirm: '削除してよろしいですか？' }
