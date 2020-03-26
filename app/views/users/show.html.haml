@@ -7,7 +7,7 @@
       %th フィードバックの内容
 
   %tbody
-    - @lesson_feedbacks.each do |feedback|
+    - @lesson_feedbacks.includes(:lesson).each do |feedback|
       %tr
         %td= feedback.lesson.summary
         %td= feedback.content
