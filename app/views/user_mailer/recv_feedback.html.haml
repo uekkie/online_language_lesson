@@ -1,0 +1,14 @@
+%p
+  = "#{@user.name}様、受講されたレッスンへのフィードバックがありました。ご確認ください。"
+
+%table
+  %thead
+    %tr
+      %th レッスン概要
+      %th フィードバックの内容
+  %tbody
+    %tr
+      %td= @lesson_feedback.lesson.summary
+      %td
+        = @lesson_feedback.content
+
