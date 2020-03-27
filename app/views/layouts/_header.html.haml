@@ -5,7 +5,7 @@
     = link_to '講師ログイン', new_teacher_session_path, class: 'nav-item nav-link'
   - else
     - if user_signed_in?
-      = "#{current_user.name} （生徒）"
+      = link_to "#{current_user.name} （生徒）", user_path(current_user)
       = link_to 'レッスン一覧', users_lessons_path, class: 'nav-item nav-link'
       = link_to '予約の確認', users_reservations_path, class: 'nav-item nav-link'
       = link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'nav-item nav-link'
@@ -16,8 +16,7 @@
         = "#{current_teacher.name} （管理者）"
         = link_to '講師の管理', teachers_path, class: 'nav-item nav-link'
       - else
-        = "#{current_teacher.name} （講師）"
+        = link_to "#{current_teacher.name} （講師）", profile_teachers_path, class: 'nav-item nav-link'
         = link_to '予約の確認', teachers_reservations_path, class: 'nav-item nav-link'
-        = link_to 'プロフィール', profile_teachers_path, class: 'nav-item nav-link'
       = link_to 'ログアウト', destroy_teacher_session_path, method: :delete, class: 'nav-item nav-link'
 

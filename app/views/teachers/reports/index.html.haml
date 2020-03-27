@@ -1,0 +1,22 @@
+%h1 申し送りの一覧
+
+%table.table.table-striped.teachers
+  %thead
+    %tr
+      %th 講師
+      %th 生徒
+      %th レッスン
+      %th 内容
+      %th 
+
+  %tbody
+    - @reports.includes([:user, :teacher, :lesson]).each do |report|
+      %tr
+        %td= report.teacher.name
+        %td= report.user.name
+        %td= report.lesson.language.name
+        %td= report.content
+        %td
+          - if current_teacher == report.teacher
+            = link_to '編集', edit_teachers_lesson_report_path(report.lesson, report)
+            = link_to '削除', teachers_lesson_report_path(report.lesson, report), method: :delete, data: { confirm: '削除してよろしいですか？' }

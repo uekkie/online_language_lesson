@@ -23,8 +23,11 @@ Rails.application.routes.draw do
 
   namespace :teachers do
     resources :reservations, only: [:index]
-    resources :lessons
+    resources :lessons do
+      resources :reports, only: %i[show new create edit update destroy]
+    end
     resources :languages
+    resources :reports, only: %i[index]
   end
 
 
@@ -33,6 +36,10 @@ Rails.application.routes.draw do
       get "masquerade", to: "teachers/sessions#masquerade_sign_in", on: :member
     end
     get "back_to_owner", to: "teachers/sessions#back_to_owner"
+  end
+
+  resources :users, only: :show do
+    resources :reports, only: :index, controller: "users/reports"
   end
 
   resources :teachers, only: %i[index destroy] do

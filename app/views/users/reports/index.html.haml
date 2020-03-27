@@ -1,0 +1,13 @@
+%h1 #{@user.name} さんの情報
+
+%table.table.table-striped.teachers
+  %thead
+    %tr
+      %th レッスン
+      %th 申し送り事項
+
+  %tbody
+    - @lessons.includes([:report]).each do |lesson|
+      %tr
+        %td= lesson.summary
+        %td= simple_format lesson.report.content if lesson.report

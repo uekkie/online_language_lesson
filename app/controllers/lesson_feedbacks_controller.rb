@@ -23,6 +23,8 @@ class LessonFeedbacksController < ApplicationController
     @lesson_feedback = LessonFeedback.new(lesson_feedback_params)
 
     if @lesson_feedback.save
+      UserMailer.recv_feedback(@lesson_feedback).deliver_later
+
       redirect_to @lesson_feedback, notice: 'フィードバックを作成しました'
     else
       render :new

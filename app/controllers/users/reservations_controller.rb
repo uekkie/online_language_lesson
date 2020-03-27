@@ -1,7 +1,6 @@
 class Users::ReservationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_reservation, only: %i[show edit]
-  before_action :pay_coupon, only: :create
 
   def index
     @reservations = current_user.reservations.recent
@@ -22,6 +21,8 @@ class Users::ReservationsController < ApplicationController
     @reservation = current_user.reservations.build(reservation_params)
 
     if @reservation.save
+      pay_coupon
+      done_trial
       UserMailer.accept_lesson(@reservation).deliver_later
       TeacherMailer.accept_lesson(@reservation).deliver_later
       redirect_to users_reservations_url, notice: '予約を承りました'
@@ -40,8 +41,14 @@ class Users::ReservationsController < ApplicationController
     params.require(:reservation).permit(:lesson_id, :start_date)
   end
 
+  def done_trial
+    current_user.update(done_trial: true)
+  end
+
   def pay_coupon
-    raise BadRequest, 'チケット残高がありません' if current_user.coupon_balance_empty?
-    current_user.coupon_balances.create(number: -1)
+    if current_user.done_trial?
+      raise BadRequest, 'チケット残高がありません' if current_user.coupon_balance_empty?
+      current_user.coupon_balances.create(number: -1)
+    end
   end
 end
