@@ -15,6 +15,7 @@
       - if current_teacher.admin?
         = "#{current_teacher.name} （管理者）"
         = link_to '講師の管理', teachers_path, class: 'nav-item nav-link'
+        = link_to '予約状況分析', admins_reservations_path, class: 'nav-item nav-link'
       - else
         = link_to "#{current_teacher.name} （講師）", profile_teachers_path, class: 'nav-item nav-link'
         = link_to '予約の確認', teachers_reservations_path, class: 'nav-item nav-link'

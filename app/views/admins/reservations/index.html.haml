@@ -1,0 +1,17 @@
+%table.table.table-striped
+  %thead
+    %th 日付/時刻
+    - Lesson.hour_range.each do |hour|
+      %th
+        = hour.first
+  %tbody
+    - (Date.tomorrow..Date.tomorrow.since(2.weeks)).each do |date|
+      %tr
+        %td
+          = l(date)
+        - Lesson::LESSON_HOUR_RANGE.each do |hour|
+          - if @datas.has_key?([date, hour])
+            %td #{@datas[[date, hour]]}
+
+          - else
+            %td ---
