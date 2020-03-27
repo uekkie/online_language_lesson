@@ -1,0 +1,10 @@
+- new_record = @report.new_record?
+
+= simple_form_for([@lesson, @report], url: new_record ? teachers_lesson_reports_path : teachers_lesson_report_path) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  .form-inputs
+    = f.input :content
+  .form-actions
+    = f.button :submit, class: "btn btn-primary"

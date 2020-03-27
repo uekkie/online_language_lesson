@@ -1,0 +1,7 @@
+%h1 申し送り内容
+
+.card
+  .card-header
+    = @report.lesson.summary
+  .card-body
+    = simple_format @report.content

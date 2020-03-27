@@ -19,6 +19,9 @@
         %td
           = lesson.start_at
         %td
-          = for_teacher ? reservation.user.name : lesson.teacher.name
+          - if for_teacher
+            = link_to reservation.user.name, user_reports_path(reservation.user)
+          - else
+            = lesson.teacher.name
         %td
           = lesson.zoom_url.present? ? lesson.zoom_url : '指定されていません'
