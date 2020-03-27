@@ -24,13 +24,18 @@
             = @lesson.teacher.name
 
   .form-actions
-    - if current_user.coupon_balance_empty?
-      %p{ class: 'btn btn-secondary'}  予約する
-      %p
-        チケット残高がありません。
-        = link_to 'チケットを購入', new_users_charge_path
-        してください。
+    - if current_user.done_trial?
+      - if current_user.coupon_balance_empty?
+        %p{ class: 'btn btn-secondary'}  予約する
+        %p
+          チケット残高がありません。
+          = link_to 'チケットを購入', new_users_charge_path
+          してください。
+      - else
+        %p
+          = "チケットを1消費します。（#{current_user.calc_coupon_balance}→#{current_user.calc_coupon_balance-1}）"
+        = f.button :submit, "予約する", class: 'btn btn-primary'
     - else
       %p
-        = "チケットを1消費します。（#{current_user.calc_coupon_balance}→#{current_user.calc_coupon_balance-1}）"
+        = "初回無料でレッスンを受講できます！"
       = f.button :submit, "予約する", class: 'btn btn-primary'

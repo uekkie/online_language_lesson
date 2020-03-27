@@ -9,6 +9,7 @@ class Lesson < ApplicationRecord
 
   scope :recent, -> { order(created_at: :desc) }
   scope :latest, -> { order(:date)}
+  scope :query_language, -> (language_id) { where(language_id: language_id) if language_id.present? }
 
   validates :zoom_url, :date, :hour, presence: true
 
