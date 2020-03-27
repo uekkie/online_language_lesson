@@ -15,6 +15,10 @@ Rails.application.routes.draw do
       registrations: 'users/registrations'
   }
 
+  namespace :admins do
+    resources :reservations, only: %i[index]
+  end
+
   namespace :users do
     resources :lessons, only: [:index]
     resources :reservations, only: %i[index new create]
