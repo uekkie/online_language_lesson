@@ -1,0 +1,8 @@
+.card.query-languages
+  .card-header
+    学びたい言語で絞り込む
+  .card-body
+    = link_to "すべて表示", users_lessons_path, class: "btn btn-sm btn-primary"
+
+    - languages.each do |language|
+      = link_to language.name, users_lessons_path({params: {language_id: language.id}}), class: "btn btn-sm btn-primary"
