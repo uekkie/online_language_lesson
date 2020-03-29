@@ -1,0 +1,11 @@
+%h1 講師の選択
+
+%table.table.table-striped.teachers
+  %thead
+    %tr
+      %th 講師名
+
+  %tbody
+    - @teachers.each do |teacher|
+      %tr
+        %td= link_to teacher.name, admins_monthly_graph_path(teacher.id)
