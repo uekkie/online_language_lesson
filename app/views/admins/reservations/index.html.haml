@@ -11,7 +11,8 @@
           = l(date)
         - Lesson::LESSON_HOUR_RANGE.each do |hour|
           - if @datas.has_key?([date, hour])
-            %td #{@datas[[date, hour]]}
-
+            - data = @datas[[date, hour]]
+            %td{ class: "#{data[:color]}" }
+              = "#{data[:reserve_count]}/#{data[:lesson_count]}"
           - else
             %td ---
