@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root to: "homes#index"
 
@@ -17,6 +16,7 @@ Rails.application.routes.draw do
 
   namespace :admins do
     resources :reservations, only: %i[index]
+    resources :monthly_graphs, only: %i[index show]
   end
 
   namespace :users do
