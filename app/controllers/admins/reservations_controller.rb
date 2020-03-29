@@ -1,6 +1,8 @@
 class Admins::ReservationsController < ApplicationController
   before_action :authenticate_teacher!
   before_action :is_not_admin
+  before_action :set_date
+  before_action :filtered_lessons
 
   def index
     @datas = calc_percentage
@@ -13,9 +15,9 @@ class Admins::ReservationsController < ApplicationController
   end
 
   def calc_percentage
-    lesson_hash = Lesson.order(:date, :hour).group(:date, :hour).count
+    lesson_hash = @filtered_lessons.order(:date, :hour).group(:date, :hour).count
 
-    reserve_hash = Lesson.where(
+    reserve_hash = @filtered_lessons.where(
       id: Reservation.pluck(:lesson_id)
     ).order(:date, :hour).group(:date, :hour).count
 
@@ -41,5 +43,15 @@ class Admins::ReservationsController < ApplicationController
     else
       "red"
     end
+  end
+
+
+  def set_date
+    @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.tomorrow
+    @end_date = params[:end_date] ? Date.parse(params[:end_date]) : 15.days.since.to_date
+  end
+
+  def filtered_lessons
+    @filtered_lessons = Lesson.where(date: @start_date..@end_date)
   end
 end
