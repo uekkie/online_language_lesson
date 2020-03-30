@@ -2,7 +2,7 @@ class Admins::MonthlyGraphsController < Admins::ApplicationController
   before_action :set_teacher, only: :show
 
   def index
-    @teachers = Teacher.all
+    @teachers = Teacher.without_admin
   end
 
   def show
