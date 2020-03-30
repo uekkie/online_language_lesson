@@ -5,4 +5,5 @@ class Language < ApplicationRecord
   validates :name, uniqueness: { scope: :teacher_id }
 
   scope :recent, -> { order(created_at: :desc)}
+  scope :unique, -> { select(:name).distinct }
 end
