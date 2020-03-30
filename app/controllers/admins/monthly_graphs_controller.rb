@@ -1,12 +1,12 @@
 class Admins::MonthlyGraphsController < ApplicationController
-  before_action :set_teacher, :set_date, only: :show
+  before_action :set_teacher, only: :show
 
   def index
     @teachers = Teacher.all
   end
 
   def show
-    @datas = calc_percentage(@teacher.lessons)
+    @teachers_stats = teachers_stats
   end
 
   private
@@ -15,39 +15,19 @@ class Admins::MonthlyGraphsController < ApplicationController
     @teacher = Teacher.find(params[:id])
   end
 
-  def calc_percentage(lessons)
-    lesson_hash = lessons.order(:date, :hour).group(:date, :hour).count
-
-    reserve_hash = lessons.where(
-        id: Reservation.pluck(:lesson_id)
-    ).order(:date, :hour).group(:date, :hour).count
-
-    lesson_zero_padding_hash = lesson_hash.keys.map{|k| [k,0]}.to_h
-    reserve_zero_padding_hash = lesson_zero_padding_hash.merge(reserve_hash)
-
-    lesson_hash.merge(reserve_zero_padding_hash) do |key, lesson, reserve|
+  def teachers_stats
+    lessons_group_by_month = @teacher.lessons.group_by_month(:date, format: "%Y-%m,%b").count
+    @reserved_lessons = @teacher.lessons.where.not(reservation: nil)
+    @reserved_lessons_group_by_month = @reserved_lessons.group_by_month(:date, format: "%Y-%m,%b").count
+    
+    lessons_group_by_month.map do |k,v|
+      reserve_count = @reserved_lessons_group_by_month.has_key?(k) ? @reserved_lessons_group_by_month[k] : 0
       {
-          lesson_count: lesson,
-          reserve_count: reserve,
-          percentage: reserve*100/lesson,
-          color: cell_color(reserve*100/lesson)
+        date: k.split(",").first,
+        month:  k.split(",").second,
+        lesson_count: v,
+        reserve_count: reserve_count
       }
     end
-  end
-
-  def cell_color(percentage)
-    case percentage
-    when 0..50 then
-      "blue"
-    when 51..80 then
-      "orange"
-    else
-      "red"
-    end
-  end
-
-  def set_date
-    @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.tomorrow
-    @end_date = params[:end_date] ? Date.parse(params[:end_date]) : 15.days.since.to_date
   end
 end
