@@ -1,5 +1,6 @@
-.navigations
-  = link_to '月毎の講師予約率', admins_monthly_graphs_path
+%ol.list-group.navigations.mb-4
+  %li.list-group-item= link_to '講師毎の予約率', admins_monthly_graphs_path
+  %li.list-group-item= link_to '言語毎の予約率', admins_language_graphs_path
 
 .display-term.mb-3
   = form_with( url:admins_reservations_path, method: :get, local: true ) do |f|

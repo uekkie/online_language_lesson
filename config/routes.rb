@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     resources :monthly_graphs, only: %i[index show] do
       resources :daily_graphs, only: %i[index]
     end
+    resources :language_graphs, only: %i[index show]
   end
 
   namespace :users do
