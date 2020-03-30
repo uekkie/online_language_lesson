@@ -14,8 +14,8 @@ class Admins::DailyGraphsController < Admins::ApplicationController
 
   def set_date
     @origin_date = params[:date] ? Date.parse(params[:date]) : Date.current
-    @start_date = @origin_date.beginning_of_month.beginning_of_week
-    @end_date = @origin_date.end_of_month.end_of_week   
+    @start_date = @origin_date.beginning_of_month.beginning_of_week(:sunday)
+    @end_date = @origin_date.end_of_month.end_of_week(:sunday)
     @date_range = (@start_date..@end_date).to_a
   end
 
@@ -28,14 +28,17 @@ class Admins::DailyGraphsController < Admins::ApplicationController
     @reserved_lessons = lessons.where.not(reservation: nil)
     @reserved_lessons_group_by_day = @reserved_lessons.group_by_day(:date, format: "%Y-%m-%d,%a").count
     
-    lessons_group_by_day.map do |k,v|
-      reserve_count = @reserved_lessons_group_by_day.has_key?(k) ? @reserved_lessons_group_by_day[k] : 0
+    maped_lessons = lessons_group_by_day.map do |date_week, lesson_count|
+      reserve_count = @reserved_lessons_group_by_day.has_key?(date_week) ? @reserved_lessons_group_by_day[date_week] : 0
       {
-        date: k.split(",").first,
-        week:  k.split(",").second,
-        lesson_count: v,
-        reserve_count: reserve_count
+        date_week.split(",").first => {
+          lesson_count: lesson_count,
+          reserve_count: reserve_count,
+          cell_color: lesson_count>0 ? cell_color(reserve_count*100/lesson_count) : ""
+        }
       }
     end
+
+    maped_lessons.inject({}){|result,item| result.merge(item)}
   end
 end
