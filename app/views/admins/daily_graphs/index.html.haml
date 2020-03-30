@@ -3,19 +3,31 @@
 .table-responsive
   %table.table.table-bordered
     %thead
-      %th 日付/時刻
-      - Lesson.hour_range.each do |hour|
-        %th
-          = hour.first
+      %th 日付
+      %th 予約数
+      %th レッスン数
     %tbody
-      - (@start_date..@end_date).each do |date|
+      - @daily_stats.each do |stat|
         %tr
           %td
-            = l(date)
-          - Lesson::LESSON_HOUR_RANGE.each do |hour|
-            - if @datas.has_key?([date, hour])
-              - data = @datas[[date, hour]]
-              %td{ class: "#{data[:color]}" }
-                = "#{data[:reserve_count]}/#{data[:lesson_count]}"
-            - else
-              %td ---
+            = "#{l(Date.parse(stat[:date]))} （#{stat[:week]}）"
+          %td
+            = stat[:reserve_count]
+          %td
+            = stat[:lesson_count]
+
+
+%table.table.table-bordered
+  %thead
+    %tr
+      - @date_range.slice(0, 7).each do |day|
+        %th
+          = t('date.abbr_day_names')[day.wday]
+  %tbody
+    - @date_range.each_slice(7) do |week|
+      %tr
+        - week.each do |day|
+          %td{class: td_classes_for(day, @origin_date)}
+            = day
+
+            
