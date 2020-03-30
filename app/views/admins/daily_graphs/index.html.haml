@@ -1,0 +1,21 @@
+%h1 日毎
+
+.table-responsive
+  %table.table.table-bordered
+    %thead
+      %th 日付/時刻
+      - Lesson.hour_range.each do |hour|
+        %th
+          = hour.first
+    %tbody
+      - (@start_date..@end_date).each do |date|
+        %tr
+          %td
+            = l(date)
+          - Lesson::LESSON_HOUR_RANGE.each do |hour|
+            - if @datas.has_key?([date, hour])
+              - data = @datas[[date, hour]]
+              %td{ class: "#{data[:color]}" }
+                = "#{data[:reserve_count]}/#{data[:lesson_count]}"
+            - else
+              %td ---
