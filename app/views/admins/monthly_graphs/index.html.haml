@@ -8,4 +8,5 @@
   %tbody
     - @teachers.each do |teacher|
       %tr
-        %td= link_to teacher.name, admins_monthly_graph_path(teacher.id)
+        %td
+          = link_to teacher.name, admins_monthly_graph_path(teacher.id)
