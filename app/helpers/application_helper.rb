@@ -8,6 +8,15 @@ module ApplicationHelper
     session[:admin_id].present?
   end
 
+  def column_color(wday)
+    case wday
+    when 6
+      "saturday"
+    when 0
+      "sunday"
+    end
+  end
+
   def td_classes_for(day, start_date)
     today = Date.current
 
@@ -21,7 +30,7 @@ module ApplicationHelper
     td_class << 'next-month'    if start_date.month != day.month && day > start_date
     td_class << 'current-month' if start_date.month == day.month
 
-    td_class
+    td_class.join(" ")
   end
 
 end

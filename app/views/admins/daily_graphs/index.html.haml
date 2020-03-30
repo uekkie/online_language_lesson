@@ -1,31 +1,19 @@
-%h1 日毎
-
-.table-responsive
-  %table.table.table-bordered
-    %thead
-      %th 日付
-      %th 予約数
-      %th レッスン数
-    %tbody
-      - @daily_stats.each do |stat|
-        %tr
-          %td
-            = "#{l(Date.parse(stat[:date]))} （#{stat[:week]}）"
-          %td
-            = stat[:reserve_count]
-          %td
-            = stat[:lesson_count]
-
+%h1 #{@teacher.name}さんの#{@origin_date.month}月の予約状況
 
 %table.table.table-bordered
   %thead
     %tr
       - @date_range.slice(0, 7).each do |day|
-        %th
+        %th{class: column_color( day.wday ) }
           = t('date.abbr_day_names')[day.wday]
   %tbody
     - @date_range.each_slice(7) do |week|
       %tr
-        - week.each do |day|
-          %td{class: td_classes_for(day, @origin_date)}
-            = day
+        - week.each do |date|
+          - stat =  @daily_stats[date.to_s] || {lesson_count:0, reserve_count:0}
+          %td{class: "#{td_classes_for(date, @origin_date)} #{column_color( date.wday )}"}
+            = date.day
+            %p
+              .badge{class: stat[:cell_color]}
+                = "#{stat[:reserve_count]} / #{stat[:lesson_count]}"
+
