@@ -16,7 +16,9 @@ Rails.application.routes.draw do
 
   namespace :admins do
     resources :reservations, only: %i[index]
-    resources :monthly_graphs, only: %i[index show]
+    resources :monthly_graphs, only: %i[index show] do
+      resources :daily_graphs, only: %i[index]
+    end
   end
 
   namespace :users do

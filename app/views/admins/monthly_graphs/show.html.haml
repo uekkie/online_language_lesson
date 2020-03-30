@@ -11,7 +11,7 @@
       - @teachers_stats.each do |stat|
         %tr
           %td
-            = stat[:month]
+            = link_to stat[:month], admins_monthly_graph_daily_graphs_path(@teacher,{params: {date: stat[:date]}})
           %td
             = stat[:reserve_count]
           %td
