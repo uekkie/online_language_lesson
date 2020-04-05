@@ -35,7 +35,8 @@ Rails.application.routes.draw do
     end
     resources :languages
     resources :reports, only: %i[index]
-  end
+    resources :multi_lesson_registers, only: %i[new create]
+    end
 
 
   devise_scope :teacher do

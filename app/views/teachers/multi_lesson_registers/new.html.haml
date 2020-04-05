@@ -1,0 +1,209 @@
+%h1 新しいレッスン
+
+-#= render 'form'
+:css
+  table{
+    border: #dddddd solid 1px;
+    border-collapse: collapse;
+    line-height:1em;
+      float: left;
+      margin: 5px;
+  }
+  table th{
+    border: #dddddd solid 1px;
+    background-color: #162F6B;
+    padding: 5px;
+    color: #FFFFFF;
+      font-size: 0.9em;
+  }
+  table td{
+    border: #dddddd solid 1px;
+    padding:10px;
+      text-align: right;
+      cursor: pointer;
+  }
+  table td:hover{
+    background-color: #FFF09E;
+  }
+  /**************************
+   * ボタン用
+   **************************/
+  .calendar_button a{
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: normal;
+    display: inline-block;
+    background-color: #878787;
+    padding: 5px;
+    border-radius: 3px;
+  }
+  .calendar_button a:hover{
+    background-color: #9E9E9E;
+  }
+
+:javascript
+  (function($){
+  $.fn.cehckcalendar = function(options) {
+    var settings = $.extend( {
+      'week'      : ["日", "月", "火", "水", "木", "金", "土"],
+      'loop'      : 1,
+      'prefix'    : 'mycld_',
+      'delimiter' : '-',
+      'td_on'     : '#B3D39B',
+      'td_off'    : '#FFFFFF',
+      'send'      : 'days'
+    }, options);
+
+  $(this).html('');
+
+  var $div      = $(this);
+  var str_Date = null;
+  var end_Date  = null;
+
+  var class_td         = settings.prefix+'td';
+  var class_month_on   = settings.prefix+'month_on';
+  var class_month_off  = settings.prefix+'month_off';
+
+    if(settings.start){
+      var s_Date     = settings.start.split("-");
+          str_Date = new Date(s_Date[0],s_Date[1]-1,1);
+    }else{
+      var sdate = new Date();
+      var s_yy  = sdate.getFullYear();
+      var s_mm  = sdate.getMonth()+1;
+      var s_dd  = sdate.getDate();
+          str_Date = new Date(s_yy,s_mm-1,s_dd);
+    }
+
+      var y = str_Date.getFullYear();
+      var m = str_Date.getMonth()+1;
+
+      $(document).on('click','.'+class_td,function(){
+        var flag  = $(this).data("flag");
+        if(flag == 'on'){
+          $(this).css({'background-color': settings.td_off});
+          $(this).data("flag","off");
+        }else if(flag == 'off'){
+          $(this).css({'background-color': settings.td_on});
+          $(this).data("flag","on");
+        }
+        getDate();
+      });
+
+      $(document).on('click','#'+class_month_on,function(e){
+        $(this).parents('table').find('td').css({'background-color': settings.td_on});
+        $(this).parents('table').find('td').data("flag","on");
+        getDate();
+        e.preventDefault();
+      });
+
+      $(document).on('click','#'+class_month_off,function(e){
+        $(this).parents('table').find('td').css({'background-color': settings.td_off});
+        $(this).parents('table').find('td').data("flag","off");
+        getDate();
+        e.preventDefault();
+      });
+
+    var getDate = function(){
+      var data = '';
+      $div.find("td").each(function(){
+        var flag = $(this).data('flag');
+        if( flag == 'on' && $(this).text() ){
+          var id = $(this).attr('id');
+              id = id.replace(settings.prefix, "");
+              data += id+',';
+        }
+      });
+      data = data.slice(0, -1);
+
+      $("#"+settings.send).val(data);
+    };
+
+    var Calendar = function(obj,yyyy,mmmm){
+        var week = settings.week;
+        var html = '';
+
+        for(var i=0; i<settings.loop; i++){
+          var sdate = new Date(yyyy,(mmmm-1)+i,1);
+          var s_yy  = sdate.getFullYear();
+          var s_mm  = sdate.getMonth()+1;
+          var blank = sdate.getDay()|0;
+          var last = lastDay(s_yy,s_mm)|0;
+          var cal  = Math.ceil( (blank+last)/7 );
+
+          var table_ID = settings.prefix+''+s_yy+''+s_mm;
+
+            html +='<table class="calendar_button" id="'+table_ID+'">';
+            html +='  <tr>';
+            html +='    <th colspan="7">'+s_yy+'/'+s_mm+' &nbsp; <a href="#" id="'+class_month_on+'">全選択</a> <a href="#" id="'+class_month_off+'">解除</a></th>';
+            html +='  </tr>';
+
+            html +='<tr>';
+            html +='  <th>'+settings.week[0]+'</th>';
+            html +='  <th>'+settings.week[1]+'</th>';
+            html +='  <th>'+settings.week[2]+'</th>';
+            html +='  <th>'+settings.week[3]+'</th>';
+            html +='  <th>'+settings.week[4]+'</th>';
+            html +='  <th>'+settings.week[5]+'</th>';
+            html +='  <th>'+settings.week[6]+'</th>';
+            html +='</tr>';
+
+              var setDay = 0;
+              for(var r = 0; r<cal; r++){
+                html +='<tr>';
+                  for(var d=0; d<7; d++){
+                    var day = '';
+                    var ymd = '';
+                    if(r==0 && d<blank){
+                      day = '';
+                    }else{
+                      setDay++;
+                      if(setDay <= last){
+                        day = setDay;
+                        ymd = s_yy+''+settings.delimiter+''+s_mm+''+settings.delimiter+''+setDay;
+                      }else{
+                        day = '';
+                      }
+                    }
+                    var id = settings.prefix+''+ymd;
+                    html +='  <td data-flag="off" class="'+class_td+'" id="'+id+'">'+day+'</td>';
+                  }
+                html +='</tr>';
+              }
+            html +='</table>';
+        }
+
+        obj.html(html);
+
+    };
+
+    var lastDay = function(y, m){
+      var dt = new Date(y, m, 0);
+      return dt.getDate();
+    };
+
+    return Calendar($(this),y,m);
+  };
+  })(jQuery);
+
+  $(function(){
+    $('.mycalendar').cehckcalendar();
+  });
+
+= form_with(url: teachers_multi_lesson_registers_path, local: true ) do |f|
+  = f.hidden_field :days, id: "days", name: "days"
+
+  .mycalendar{style:"overflow:hidden;"}
+
+  .form-inputs
+    = f.select :language_id, current_teacher.languages.map{ |language| [language.name, language.id] }
+  .form-inputs
+    .row
+      .col-6
+        = f.select :hour,  Lesson.hour_range
+  .form-inputs
+    = f.text_field :zoom_url, value: "https://zoom.us/1234"
+  .form-actions
+    = f.button :submit, class: "btn btn-primary"
+
+= link_to 'キャンセル', teachers_lessons_path
