@@ -3,7 +3,6 @@ class Teachers::MultiLessonRegistersController < ApplicationController
   before_action :parse_days, only: :create
 
   def new
-
   end
 
   def create
@@ -41,8 +40,8 @@ class Teachers::MultiLessonRegistersController < ApplicationController
 
   def set_date
     @origin_date = Date.current
-    @start_date = @origin_date.beginning_of_month.beginning_of_week(:sunday)
-    @end_date = @origin_date.end_of_month.end_of_week(:sunday)
-    @date_range = (@start_date..@end_date).to_a
+    start_date = @origin_date.beginning_of_month.beginning_of_week(:sunday)
+    end_date = @origin_date.end_of_month.end_of_week(:sunday)
+    @date_range = (start_date..end_date).to_a
   end
 end
