@@ -2,7 +2,10 @@ class Teachers::MultiLessonRegistersController < ApplicationController
   before_action :parse_days, only: :create
 
   def new
-
+    @origin_date = Date.current
+    @start_date = @origin_date.beginning_of_month.beginning_of_week(:sunday)
+    @end_date = @origin_date.end_of_month.end_of_week(:sunday)
+    @date_range = (@start_date..@end_date).to_a
   end
 
   def create
