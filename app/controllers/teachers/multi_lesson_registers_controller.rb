@@ -1,14 +1,16 @@
 class Teachers::MultiLessonRegistersController < ApplicationController
+  before_action :set_date
   before_action :parse_days, only: :create
 
   def new
-    @origin_date = Date.current
-    @start_date = @origin_date.beginning_of_month.beginning_of_week(:sunday)
-    @end_date = @origin_date.end_of_month.end_of_week(:sunday)
-    @date_range = (@start_date..@end_date).to_a
+
   end
 
   def create
+    if @days.blank?
+      redirect_to new_teachers_multi_lesson_register_url, alert: '日付を選択してください'
+      return
+    end
     lesson_count = Lesson.count
     Lesson.transaction do
       @days.each do |day|
@@ -35,5 +37,12 @@ class Teachers::MultiLessonRegistersController < ApplicationController
 
   def lesson_params_without_date
     params.permit(:language_id, :hour, :zoom_url)
+  end
+
+  def set_date
+    @origin_date = Date.current
+    @start_date = @origin_date.beginning_of_month.beginning_of_week(:sunday)
+    @end_date = @origin_date.end_of_month.end_of_week(:sunday)
+    @date_range = (@start_date..@end_date).to_a
   end
 end
