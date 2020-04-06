@@ -7,7 +7,6 @@ class Teacher < ApplicationRecord
   mount_uploader :avatar, AvatarUploader
 
   has_many :lessons, dependent: :destroy
-  accepts_nested_attributes_for :lessons, allow_destroy: true
 
   has_many :reservations, through: :lessons
 
