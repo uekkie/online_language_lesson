@@ -1,7 +1,7 @@
 class Lesson < ApplicationRecord
   belongs_to :teacher
   belongs_to :language
-  has_one :reservation
+  has_one :reservation, dependent: :destroy
   has_one :feedback, class_name: 'LessonFeedback' 
   has_one :report
 

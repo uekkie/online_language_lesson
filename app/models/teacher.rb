@@ -7,6 +7,7 @@ class Teacher < ApplicationRecord
   mount_uploader :avatar, AvatarUploader
 
   has_many :lessons, dependent: :destroy
+
   has_many :reservations, through: :lessons
 
   has_many :languages, dependent: :destroy
