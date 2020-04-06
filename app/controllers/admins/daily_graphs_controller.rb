@@ -14,9 +14,9 @@ class Admins::DailyGraphsController < Admins::ApplicationController
 
   def set_date
     @origin_date = params[:date] ? Date.parse(params[:date]) : Date.current
-    @start_date = @origin_date.beginning_of_month.beginning_of_week(:sunday)
-    @end_date = @origin_date.end_of_month.end_of_week(:sunday)
-    @date_range = (@start_date..@end_date).to_a
+    start_date = @origin_date.beginning_of_month.beginning_of_week(:sunday)
+    end_date = @origin_date.end_of_month.end_of_week(:sunday)
+    @date_range = (start_date..end_date).to_a
   end
 
   def filtered_lessons
