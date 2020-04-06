@@ -1,32 +1,6 @@
 %h1 新しいレッスン
 
-:css
-  .td_check
-  {
-    background-color: #FFF09E;
-  }
-
-:javascript
-  (function($){
-    var class_td = 'mycld_td'
-    $(document).on('click','.'+class_td,function(){
-      $(this).data("flag", $(this).data("flag") == 'on' ? "off" : "on")
-      $(this).toggleClass('td_check')
-      getDate()
-    })
-
-    var getDate = function(){
-      var $div = $("#calendar")
-      let ary_date = []
-      $div.find("td").each(function(){
-        var flag = $(this).data('flag')
-        if( flag == 'on' && $(this).text() ){
-          ary_date.push($(this).attr('id').replace("mycld_", ""))
-        }
-      })
-      $("#days").val(ary_date.join(','))
-    }
-  })(jQuery)
+%p 日付を複数選択してレッスンを登録できます。選択可能な日付は明日以降です。
 
 = form_with(url: teachers_multi_lesson_registers_path, local: true ) do |f|
   = f.hidden_field :days, id: "days", name: "days"
@@ -45,14 +19,17 @@
               = date.day
 
   .form-inputs
-    = f.select :language_id, current_teacher.languages.map{ |language| [language.name, language.id] }
-  .form-inputs
     .row
       .col-6
-        = f.select :hour,  Lesson.hour_range
+        = f.label t 'activerecord.model.language'
+        = f.select :language_id, current_teacher.languages.map{ |language| [language.name, language.id] }, {}, class: 'form-control'
+      .col-6
+        = f.label t 'activerecord.attributes.lesson.hour'
+        = f.select :hour,  Lesson.hour_range, {}, { class: 'form-control'}
   .form-inputs
-    = f.text_field :zoom_url, value: "https://zoom.us/1234"
+    = f.label t 'activerecord.attributes.lesson.zoom_url'
+    = f.text_field :zoom_url, value: "https://zoom.us/1234", class: 'form-control'
   .form-actions
-    = f.button :submit, class: "btn btn-primary"
+    = f.submit '登録する', class: "btn btn-primary"
 
 = link_to 'キャンセル', teachers_lessons_path
