@@ -1,5 +1,5 @@
 class Admins::LanguageGraphsController < Admins::ApplicationController
-  before_action :set_date
+  before_action :set_date, :date_range, if: :valid_date
 
   def index
     @languages = Language.unique
@@ -15,13 +15,20 @@ class Admins::LanguageGraphsController < Admins::ApplicationController
 
   private
 
+  def valid_date
+    params[:date].present?
+  end
+
   def set_date
-    return if params[:date].blank?
     @origin_date = Date.parse(params[:date])
+  end
+
+  def date_range
     start_date = @origin_date.beginning_of_month.beginning_of_week(:sunday)
     end_date = @origin_date.end_of_month.end_of_week(:sunday)
-    @date_range = (start_date..end_date).to_a
+    @date_range = (start_date..end_date)
   end
+
 
   def languages_stats(lessons)
     lessons_group_by_month = lessons.group_by_month(:date, format: "%Y-%m-%d,%b").count
