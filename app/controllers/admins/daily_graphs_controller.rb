@@ -1,9 +1,8 @@
 class Admins::DailyGraphsController < Admins::ApplicationController
-  before_action :set_teacher, :set_date
+  before_action :set_teacher, :set_date, :date_range
 
   def index
-    filtered_lessons
-    @daily_stats = daily_stats(@filtered_lessons)
+    @daily_stats = daily_stats(filtered_lessons)
   end
 
   private
@@ -14,13 +13,16 @@ class Admins::DailyGraphsController < Admins::ApplicationController
 
   def set_date
     @origin_date = params[:date] ? Date.parse(params[:date]) : Date.current
+  end
+
+  def date_range
     start_date = @origin_date.beginning_of_month.beginning_of_week(:sunday)
     end_date = @origin_date.end_of_month.end_of_week(:sunday)
-    @date_range = (start_date..end_date).to_a
+    @date_range = (start_date..end_date)
   end
 
   def filtered_lessons
-    @filtered_lessons = @teacher.lessons.where(date: @start_date..@end_date)
+    @teacher.lessons.where(date: date_range)
   end
 
   def daily_stats(lessons)
