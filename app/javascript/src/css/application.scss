@@ -1,0 +1,23 @@
+@import 'node_modules/bootstrap/scss/bootstrap';
+
+.blue {
+  background-color: blue;
+}
+.orange {
+  background-color: orange;
+}
+.red {
+  background-color: red;
+}
+
+.saturday {
+  background-color: lightblue;
+}
+
+.sunday {
+  background-color: lightpink;
+}
+
+.prev-month, .next-month {
+  background-color: lightgray;
+}
