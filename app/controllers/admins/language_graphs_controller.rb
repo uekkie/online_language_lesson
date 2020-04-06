@@ -52,7 +52,7 @@ class Admins::LanguageGraphsController < Admins::ApplicationController
     reserved_lessons = lessons.where.not(reservation: nil)
     reserved_lessons_group_by_day = reserved_lessons.group_by_day(:date, format: "%Y-%m-%d,%a").count
 
-    maped_lessons = lessons_group_by_day.map do |date_week, lesson_count|
+    mapped_lessons = lessons_group_by_day.map do |date_week, lesson_count|
       reserve_count = reserved_lessons_group_by_day.has_key?(date_week) ? reserved_lessons_group_by_day[date_week] : 0
       {
           date_week.split(",").first => {
@@ -63,6 +63,6 @@ class Admins::LanguageGraphsController < Admins::ApplicationController
       }
     end
 
-    maped_lessons.inject({}){|result,item| result.merge(item)}
+    mapped_lessons.inject({}){|result,item| result.merge(item)}
   end
 end
