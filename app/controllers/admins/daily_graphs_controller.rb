@@ -27,11 +27,11 @@ class Admins::DailyGraphsController < Admins::ApplicationController
 
   def daily_stats(lessons)
     lessons_group_by_day = lessons.group_by_day(:date, format: "%Y-%m-%d,%a").count
-    @reserved_lessons = lessons.where.not(reservation: nil)
-    @reserved_lessons_group_by_day = @reserved_lessons.group_by_day(:date, format: "%Y-%m-%d,%a").count
+    reserved_lessons = lessons.where.not(reservation: nil)
+    reserved_lessons_group_by_day = reserved_lessons.group_by_day(:date, format: "%Y-%m-%d,%a").count
     
     mapped_lessons = lessons_group_by_day.map do |date_week, lesson_count|
-      reserve_count = @reserved_lessons_group_by_day.has_key?(date_week) ? @reserved_lessons_group_by_day[date_week] : 0
+      reserve_count = reserved_lessons_group_by_day.has_key?(date_week) ? reserved_lessons_group_by_day[date_week] : 0
       {
         date_week.split(",").first => {
           lesson_count: lesson_count,
