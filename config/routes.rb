@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     resources :monthly_graphs, only: %i[index show] do
       resources :daily_graphs, only: %i[index]
     end
+    resources :language_graphs, only: %i[index show]
   end
 
   namespace :users do
@@ -34,7 +35,8 @@ Rails.application.routes.draw do
     end
     resources :languages
     resources :reports, only: %i[index]
-  end
+    resources :multi_lesson_registers, only: %i[new create]
+    end
 
 
   devise_scope :teacher do
