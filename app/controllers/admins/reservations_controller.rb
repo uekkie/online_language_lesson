@@ -2,7 +2,7 @@ class Admins::ReservationsController < Admins::ApplicationController
   before_action :date_range
 
   def index
-    @datas = calc_percentage(filtered_lessons)
+    @datas = Lesson.calc_percentage(filtered_lessons)
   end
 
   private
