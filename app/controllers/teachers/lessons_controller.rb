@@ -14,7 +14,7 @@ class Teachers::LessonsController < ApplicationController
   end
 
   def new
-    @lesson = Lesson.new
+    @lesson = current_teacher.lessons.build
   end
 
   def edit
