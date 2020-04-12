@@ -31,11 +31,11 @@ class Admins::ApplicationController < ApplicationController
   def cell_color(percentage)
     case percentage
     when 0..50 then
-      "blue"
+      "low"
     when 51..80 then
-      "orange"
+      "usual"
     else
-      "red"
+      "full"
     end
   end
 
