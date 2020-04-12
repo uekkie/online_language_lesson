@@ -115,4 +115,14 @@ class Lesson < ApplicationRecord
       }
     end
   end
+
+  def self.bulk_create(teacher, days, lesson_params_without_date)
+    Lesson.transaction do
+      days.each do |day|
+        lesson = teacher.lessons.build(lesson_params_without_date)
+        lesson.date = day
+        lesson.save!
+      end
+    end
+  end
 end

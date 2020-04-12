@@ -11,13 +11,7 @@ class Teachers::MultiLessonRegistersController < ApplicationController
       return
     end
     lesson_count = Lesson.count
-    Lesson.transaction do
-      @days.each do |day|
-        @lesson = current_teacher.lessons.build(lesson_params_without_date)
-        @lesson.date = day
-        @lesson.save!
-      end
-    end
+    Lesson.bulk_create(current_teacher, @days, lesson_params_without_date)
 
     if Lesson.count == lesson_count + @days.count
       redirect_to teachers_lessons_url, notice: "レッスンを#{@days.count}件追加しました"
