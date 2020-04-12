@@ -23,16 +23,12 @@ class Teachers::RegistrationsController < Devise::RegistrationsController
   end
 
   def sign_up(resource_name, resource)
-    if !current_teacher_is_admin?
-      sign_in(resource_name, resource)
-    end
+    sign_in(resource_name, resource) unless current_teacher_is_admin?
   end
 
   def creatable?
     raise 'アクセス権限がありません' unless teacher_signed_in?
 
-    if !current_teacher_is_admin?
-      raise 'アクセス権限がありません'
-    end
+    raise 'アクセス権限がありません' unless current_teacher_is_admin?
   end
 end
