@@ -7,7 +7,7 @@ class Teachers::LanguagesController < ApplicationController
   end
 
   def new
-    @language = Language.new
+    @language = current_teacher.languages.build
   end
 
   def edit
