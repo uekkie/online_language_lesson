@@ -1,19 +1,19 @@
 class Admins::LanguageGraphsController < Admins::ApplicationController
+  before_action :set_language_name
   before_action :set_date, :date_range, if: :valid_date
 
   def index
     @languages = Language.unique
-    @language_name = params[:name]
-    if @language_name
-      lessons = Lesson.joins(:language).where("languages.name = ?", @language_name)
-      @languages_stats = languages_stats(lessons)
-      if @origin_date
-        @languages_daily_stats = daily_stats(lessons)
-      end
-    end
+    lessons = Lesson.having_language_name(@language_name)
+    set_language_stats(lessons)
+    set_daily_stats(lessons)
   end
 
   private
+
+  def set_language_name
+    @language_name = params[:name]
+  end
 
   def valid_date
     params[:date].present?
@@ -29,40 +29,11 @@ class Admins::LanguageGraphsController < Admins::ApplicationController
     @date_range = (start_date..end_date)
   end
 
-
-  def languages_stats(lessons)
-    lessons_group_by_month = lessons.group_by_month(:date, format: "%Y-%m-%d,%b").count
-    @reserved_lessons = lessons.where.not(reservation: nil)
-    reserved_lessons_group_by_month = @reserved_lessons.group_by_month(:date, format: "%Y-%m-%d,%b").count
-
-    lessons_group_by_month.map do |k,v|
-      reserve_count = reserved_lessons_group_by_month.has_key?(k) ? reserved_lessons_group_by_month[k] : 0
-      {
-          date: k.split(",").first,
-          month:  k.split(",").second,
-          lesson_count: v,
-          reserve_count: reserve_count
-      }
-    end
+  def set_language_stats(lessons)
+    @languages_stats = Lesson.languages_stats(lessons) if @language_name
   end
 
-
-  def daily_stats(lessons)
-    lessons_group_by_day = lessons.group_by_day(:date, format: "%Y-%m-%d,%a").count
-    reserved_lessons = lessons.where.not(reservation: nil)
-    reserved_lessons_group_by_day = reserved_lessons.group_by_day(:date, format: "%Y-%m-%d,%a").count
-
-    mapped_lessons = lessons_group_by_day.map do |date_week, lesson_count|
-      reserve_count = reserved_lessons_group_by_day.has_key?(date_week) ? reserved_lessons_group_by_day[date_week] : 0
-      {
-          date_week.split(",").first => {
-              lesson_count: lesson_count,
-              reserve_count: reserve_count,
-              cell_color: lesson_count>0 ? cell_color(reserve_count*100/lesson_count) : ""
-          }
-      }
-    end
-
-    mapped_lessons.inject({}){|result,item| result.merge(item)}
+  def set_daily_stats(lessons)
+    @languages_daily_stats = Lesson.daily_stats(lessons) if @language_name && @origin_date
   end
 end
