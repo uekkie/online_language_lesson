@@ -19,7 +19,7 @@ RSpec.describe "Teachers", type: :system do
   context "ログインしているとき" do
 
     before { sign_in teacher }
-    let!(:language) { create(:language, teacher: teacher) }
+    let!(:language) { create(:language) }
 
     it "レッスンを追加できる" do
       visit teachers_lessons_path
@@ -36,6 +36,31 @@ RSpec.describe "Teachers", type: :system do
       expect {
         click_on "登録する"
       }.to change{ Lesson.count }.by(1)
+    end
+
+    describe '言語のCRUD' do
+      it '教えられる言語を追加できる' do
+        visit profile_teachers_path
+        click_on '教えられる言語を追加'
+        fill_in '名前', with: '英語'
+        expect{
+          click_on '登録する'
+        }.to change{teacher.languages.count}.by(1)
+      end
+      describe '編集・削除' do
+        before {
+          create(:language)
+          visit profile_teachers_path
+        }
+        it '削除できる' do
+          expect{
+            click_on '削除'
+            expect(page.driver.browser.switch_to.alert.text).to eq '削除してよろしいですか？'
+            page.accept_confirm
+          }.to change{teacher.languages.count}.by(-1)
+        end
+      end
+
     end
   end
 end

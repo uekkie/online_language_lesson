@@ -1,17 +1,12 @@
-- editable ||= false
 %table.table.table-striped
   %thead
     %tr
       %th 言語
-      - if editable
-        %th
+      %th
 
   %tbody
-    - languages.each do |language|
+    - teacher_languages.includes(:language).each do |teacher_language|
       %tr
-        %td= language.name
-
-        - if editable
-          %td
-            = link_to '編集', edit_teachers_language_path(language)
-            = link_to '削除', teachers_language_path(language), method: :delete, data: { confirm: '削除してよろしいですか？' }
+        %td= teacher_language.language.name
+        %td
+          = link_to '削除', teachers_language_path(teacher_language), method: :delete, data: { confirm: '削除してよろしいですか？' }

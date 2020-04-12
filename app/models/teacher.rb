@@ -9,7 +9,8 @@ class Teacher < ApplicationRecord
   has_many :lessons, dependent: :destroy
   has_many :reservations, through: :lessons
 
-  has_many :languages, dependent: :destroy
+  has_many :teacher_languages
+  has_many :languages, through: :teacher_languages
 
   scope :without_admin, -> { where(admin: false) }
 

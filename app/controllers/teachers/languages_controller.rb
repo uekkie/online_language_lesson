@@ -3,7 +3,7 @@ class Teachers::LanguagesController < ApplicationController
   before_action :set_language, only: %i[edit update destroy]
 
   def index
-    @languages = current_teacher.languages.recent
+    @teacher_languages = current_teacher.teacher_languages
   end
 
   def new
@@ -14,32 +14,25 @@ class Teachers::LanguagesController < ApplicationController
   end
 
   def create
-    @language = current_teacher.languages.build(language_params)
+    language = Language.new(language_params)
+    @teacher_language = current_teacher.teacher_languages.build(language: language)
 
-    if @language.save
-      redirect_to teachers_languages_url, notice: "#{@language.name}を追加しました"
+    if @teacher_language.save
+      redirect_to profile_teachers_url, notice: "#{language.name}を追加しました"
     else
       render :new
     end
   end
 
-  def update
-    if @language.update(language_params)
-      redirect_to teachers_languages_url, notice: "#{@language.name}を変更しました"
-    else
-      render :edit
-    end
-  end
-
   def destroy
-    @language.destroy!
-    redirect_to teachers_languages_url, alert: "#{@language.name}を削除しました"
+    @teacher_language.destroy!
+    redirect_to profile_teachers_url, alert: "#{@teacher_language.language.name}を削除しました"
   end
 
   private
 
   def set_language
-    @language = current_teacher.languages.find(params[:id])
+    @teacher_language = current_teacher.teacher_languages.find(params[:id])
   end
 
   def language_params

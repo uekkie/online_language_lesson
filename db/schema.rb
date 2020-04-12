@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_08_221141) do
+ActiveRecord::Schema.define(version: 2020_04_08_222155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,13 @@ ActiveRecord::Schema.define(version: 2020_04_08_221141) do
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end
 
+  create_table "teacher_languages", force: :cascade do |t|
+    t.bigint "teacher_id", null: false
+    t.bigint "language_id", null: false
+    t.index ["language_id"], name: "index_teacher_languages_on_language_id"
+    t.index ["teacher_id", "language_id"], name: "index_teacher_languages_on_teacher_id_and_language_id", unique: true
+  end
+
   create_table "teachers", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
@@ -111,4 +118,6 @@ ActiveRecord::Schema.define(version: 2020_04_08_221141) do
   add_foreign_key "reports", "users"
   add_foreign_key "reservations", "lessons"
   add_foreign_key "reservations", "users"
+  add_foreign_key "teacher_languages", "languages"
+  add_foreign_key "teacher_languages", "teachers"
 end

@@ -9,6 +9,6 @@
 
 %h4.mt-3 レッスン可能な言語
 
-= render 'teachers/languages/language_list', languages: @teacher.languages
+= render 'teachers/languages/language_list', teacher_languages: @teacher.teacher_languages
 
 = link_to '教えられる言語を追加', new_teachers_language_path
