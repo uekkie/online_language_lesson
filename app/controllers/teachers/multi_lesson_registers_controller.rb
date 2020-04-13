@@ -10,10 +10,8 @@ class Teachers::MultiLessonRegistersController < ApplicationController
       redirect_to new_teachers_multi_lesson_register_url, alert: '日付を選択してください'
       return
     end
-    lesson_count = Lesson.count
-    Lesson.bulk_create(current_teacher, @days, lesson_params_without_date)
 
-    if Lesson.count == lesson_count + @days.count
+    if Lesson.bulk_create(current_teacher, @days, lesson_params_without_date)
       redirect_to teachers_lessons_url, notice: "レッスンを#{@days.count}件追加しました"
     else
       render :new
