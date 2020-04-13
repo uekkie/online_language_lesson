@@ -124,5 +124,8 @@ class Lesson < ApplicationRecord
         lesson.save!
       end
     end
+    true
+  rescue ActiveRecord::RecordInvalid
+    false
   end
 end
