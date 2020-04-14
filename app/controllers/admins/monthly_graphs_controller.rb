@@ -6,7 +6,7 @@ class Admins::MonthlyGraphsController < Admins::ApplicationController
   end
 
   def show
-    @teachers_stats = Lesson.teachers_stats(@teacher.lessons)
+    @teachers_stats = Lesson.booking_rates(@teacher.lessons)
   end
 
   private

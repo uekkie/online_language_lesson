@@ -14,6 +14,11 @@ class Lesson < ApplicationRecord
   scope :having_language_name, ->(language_name) {
     joins(:language).where("languages.name = ?", language_name)
   }
+  scope :reserved, -> {
+    Lesson.where(
+        id: Reservation.where(lesson_id: self.pluck(:id)).pluck(:id)
+    )
+  }
 
   validates :zoom_url, :date, :hour, presence: true
 
@@ -35,7 +40,10 @@ class Lesson < ApplicationRecord
     "#{teacher.name}先生の#{language.name}レッスン #{start_at}"
   end
 
-  def self.cell_color(percentage)
+  def self.cell_color(reserve, lesson)
+    return "" if lesson == 0
+    percentage = (reserve*100/lesson)
+
     case percentage
     when 0..50 then
       "low"
@@ -48,50 +56,30 @@ class Lesson < ApplicationRecord
 
   def self.daily_stats(lessons)
     lessons_group_by_day = lessons.group_by_day(:date, format: "%Y-%m-%d,%a").count
-    reserved_lessons = lessons.where.not(reservation: nil)
-    reserved_lessons_group_by_day = reserved_lessons.group_by_day(:date, format: "%Y-%m-%d,%a").count
-
+    reserved_lessons_group_by_day = lessons.reserved.group_by_day(:date, format: "%Y-%m-%d,%a").count
     mapped_lessons = lessons_group_by_day.map do |date_week, lesson_count|
-      reserve_count = reserved_lessons_group_by_day.has_key?(date_week) ? reserved_lessons_group_by_day[date_week] : 0
+      reserve_count = reserved_lessons_group_by_day[date_week] || 0
       {
-          date_week.split(",").first => {
-              lesson_count: lesson_count,
-              reserve_count: reserve_count,
-              cell_color: lesson_count>0 ? cell_color(reserve_count*100/lesson_count) : ""
-          }
+        date_week.split(",").first => {
+          lesson_count: lesson_count,
+          reserve_count: reserve_count,
+          cell_color: cell_color(reserve_count, lesson_count)
+        }
       }
     end
     mapped_lessons.inject({}){|result,item| result.merge(item)}
   end
 
-  def self.languages_stats(lessons)
+  def self.booking_rates(lessons)
     lessons_group_by_month = lessons.group_by_month(:date, format: "%Y-%m-%d,%b").count
-    @reserved_lessons = lessons.where.not(reservation: nil)
-    reserved_lessons_group_by_month = @reserved_lessons.group_by_month(:date, format: "%Y-%m-%d,%b").count
+    reserved_lessons_group_by_month = lessons.reserved.group_by_month(:date, format: "%Y-%m-%d,%b").count
 
-    lessons_group_by_month.map do |k,v|
-      reserve_count = reserved_lessons_group_by_month.has_key?(k) ? reserved_lessons_group_by_month[k] : 0
+    lessons_group_by_month.map do |date_month, lesson_count|
       {
-        date: k.split(",").first,
-        month:  k.split(",").second,
-        lesson_count: v,
-        reserve_count: reserve_count
-      }
-    end
-  end
-
-  def self.teachers_stats(lessons)
-    lessons_group_by_month = lessons.group_by_month(:date, format: "%Y-%m-%d,%b").count
-    reserved_lessons = lessons.where.not(reservation: nil)
-    reserved_lessons_group_by_month = reserved_lessons.group_by_month(:date, format: "%Y-%m-%d,%b").count
-
-    lessons_group_by_month.map do |k,v|
-      reserve_count = reserved_lessons_group_by_month.has_key?(k) ? reserved_lessons_group_by_month[k] : 0
-      {
-          date: k.split(",").first,
-          month:  k.split(",").second,
-          lesson_count: v,
-          reserve_count: reserve_count
+        date: date_month.split(",").first,
+        month:  date_month.split(",").second,
+        lesson_count: lesson_count,
+        reserve_count: reserved_lessons_group_by_month[date_month] || 0
       }
     end
   end
@@ -111,7 +99,7 @@ class Lesson < ApplicationRecord
           lesson_count: lesson,
           reserve_count: reserve,
           percentage: reserve*100/lesson,
-          color: cell_color(reserve*100/lesson)
+          color: cell_color(reserve, lesson)
       }
     end
   end

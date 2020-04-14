@@ -30,7 +30,7 @@ class Admins::LanguageGraphsController < Admins::ApplicationController
   end
 
   def set_language_stats(lessons)
-    @languages_stats = Lesson.languages_stats(lessons) if @language_name
+    @languages_stats = Lesson.booking_rates(lessons) if @language_name
   end
 
   def set_daily_stats(lessons)

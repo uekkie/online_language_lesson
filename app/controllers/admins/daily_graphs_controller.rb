@@ -2,7 +2,7 @@ class Admins::DailyGraphsController < Admins::ApplicationController
   before_action :set_teacher, :set_date, :date_range
 
   def index
-    @daily_stats = daily_stats(filtered_lessons)
+    @daily_stats = Lesson.daily_stats(filtered_lessons)
   end
 
   private
@@ -23,24 +23,5 @@ class Admins::DailyGraphsController < Admins::ApplicationController
 
   def filtered_lessons
     @teacher.lessons.where(date: date_range)
-  end
-
-  def daily_stats(lessons)
-    lessons_group_by_day = lessons.group_by_day(:date, format: "%Y-%m-%d,%a").count
-    reserved_lessons = lessons.where.not(reservation: nil)
-    reserved_lessons_group_by_day = reserved_lessons.group_by_day(:date, format: "%Y-%m-%d,%a").count
-    
-    mapped_lessons = lessons_group_by_day.map do |date_week, lesson_count|
-      reserve_count = reserved_lessons_group_by_day.has_key?(date_week) ? reserved_lessons_group_by_day[date_week] : 0
-      {
-        date_week.split(",").first => {
-          lesson_count: lesson_count,
-          reserve_count: reserve_count,
-          cell_color: lesson_count>0 ? cell_color(reserve_count*100/lesson_count) : ""
-        }
-      }
-    end
-
-    mapped_lessons.inject({}){|result,item| result.merge(item)}
   end
 end
