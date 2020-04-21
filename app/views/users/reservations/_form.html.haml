@@ -33,6 +33,16 @@
           してください。
       - else
         %p
+          - if current_user.subscription_balance > 0
+            %p
+              期限ありチケット:
+              = "#{current_user.subscription_balance}回"
+              有効期限
+              = l(current_user.subscription_expire_at, format: :short_jp)
+              まで
+            %p
+              無期限チケット:
+              = "#{current_user.infinite_balance}回"
           = "チケットを1消費します。（#{current_user.calc_coupon_balance}→#{current_user.calc_coupon_balance-1}）"
         = f.button :submit, "予約する", class: 'btn btn-primary'
     - else

@@ -48,7 +48,7 @@ class User < ApplicationRecord
         :description => "Onlineレッスン定期チケット #{plan.name}",
         :currency => "jpy"
     )
-    self.plan_balances.create(number: plan.number, expire_at: 30.days.since)
+    self.coupon_balances.create(number: plan.number, expire_at: 30.days.since, period: true)
     true
   rescue Stripe::CardError => e
     flash[:error] = e.message
@@ -63,4 +63,16 @@ class User < ApplicationRecord
     coupon_balances.available.sum(:number)
   end
 
+  def subscription_balance
+    coupon_balances.subscriptions.sum(:number)
+  end
+
+  def infinite_balance
+    coupon_balances.infinite.sum(:number)
+  end
+
+  def subscription_expire_at
+    return nil if subscription_balance == 0
+    coupon_balances.available.first.expire_at
+  end
 end
