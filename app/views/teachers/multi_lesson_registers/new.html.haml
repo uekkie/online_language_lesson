@@ -1,0 +1,35 @@
+%h1 新しいレッスン
+
+%p 日付を複数選択してレッスンを登録できます。選択可能な日付は明日以降です。
+
+= form_with(url: teachers_multi_lesson_registers_path, local: true ) do |f|
+  = f.hidden_field :days, id: "days", name: "days"
+
+  %table.table.table-bordered#calendar
+    %thead
+      %tr
+        - @date_range.to_a.slice(0, 7).each do |day|
+          %th{class: column_color( day.wday ) }
+            = t('date.abbr_day_names')[day.wday]
+    %tbody
+      - @date_range.each_slice(7) do |week|
+        %tr
+          - week.each do |date|
+            %td{id: "mycld_#{date.to_s}", data: {flag: "off"}, class: "#{Date.tomorrow <= date ? 'mycld_td' : ''} #{td_classes_for(date, @origin_date)} #{column_color( date.wday )}"}
+              = date.day
+
+  .form-inputs
+    .row
+      .col-6
+        = f.label t 'activerecord.model.language'
+        = f.select :language_id, current_teacher.languages.map{ |language| [language.name, language.id] }, {}, class: 'form-control'
+      .col-6
+        = f.label t 'activerecord.attributes.lesson.hour'
+        = f.select :hour,  Lesson.hour_range, {}, { class: 'form-control'}
+  .form-inputs
+    = f.label t 'activerecord.attributes.lesson.zoom_url'
+    = f.text_field :zoom_url, value: "https://zoom.us/1234", class: 'form-control'
+  .form-actions
+    = f.submit '登録する', class: "btn btn-primary"
+
+= link_to 'キャンセル', teachers_lessons_path
