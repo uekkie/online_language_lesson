@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_23_074604) do
+ActiveRecord::Schema.define(version: 2020_03_27_045308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,17 @@ ActiveRecord::Schema.define(version: 2020_03_23_074604) do
     t.index ["teacher_id"], name: "index_languages_on_teacher_id"
   end
 
+  create_table "lesson_feedbacks", force: :cascade do |t|
+    t.bigint "lesson_id", null: false
+    t.bigint "user_id", null: false
+    t.text "content", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lesson_id", "user_id"], name: "index_lesson_feedbacks_on_lesson_id_and_user_id", unique: true
+    t.index ["lesson_id"], name: "index_lesson_feedbacks_on_lesson_id"
+    t.index ["user_id"], name: "index_lesson_feedbacks_on_user_id"
+  end
+
   create_table "lessons", force: :cascade do |t|
     t.bigint "teacher_id", null: false
     t.bigint "language_id", null: false
@@ -42,6 +53,16 @@ ActiveRecord::Schema.define(version: 2020_03_23_074604) do
     t.integer "hour", default: 7, null: false
     t.index ["language_id"], name: "index_lessons_on_language_id"
     t.index ["teacher_id"], name: "index_lessons_on_teacher_id"
+  end
+
+  create_table "reports", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "lesson_id", null: false
+    t.text "content", default: "", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lesson_id"], name: "index_reports_on_lesson_id"
+    t.index ["user_id", "lesson_id"], name: "index_reports_on_user_id_and_lesson_id", unique: true
   end
 
   create_table "reservations", force: :cascade do |t|
@@ -79,14 +100,19 @@ ActiveRecord::Schema.define(version: 2020_03_23_074604) do
     t.string "stripe_customer_id", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "done_trial", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "coupon_balances", "users"
   add_foreign_key "languages", "teachers"
+  add_foreign_key "lesson_feedbacks", "lessons"
+  add_foreign_key "lesson_feedbacks", "users"
   add_foreign_key "lessons", "languages"
   add_foreign_key "lessons", "teachers"
+  add_foreign_key "reports", "lessons"
+  add_foreign_key "reports", "users"
   add_foreign_key "reservations", "lessons"
   add_foreign_key "reservations", "users"
 end

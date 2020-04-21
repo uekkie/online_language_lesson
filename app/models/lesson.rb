@@ -1,10 +1,15 @@
 class Lesson < ApplicationRecord
   belongs_to :teacher
   belongs_to :language
-  has_many :reservations, dependent: :destroy
+  has_one :reservation
+  has_one :feedback, class_name: 'LessonFeedback' 
+  has_one :report
+
+  has_one :user, through: :reservation
 
   scope :recent, -> { order(created_at: :desc) }
   scope :latest, -> { order(:date)}
+  scope :query_language, -> (language_id) { where(language_id: language_id) if language_id.present? }
 
   validates :zoom_url, :date, :hour, presence: true
 

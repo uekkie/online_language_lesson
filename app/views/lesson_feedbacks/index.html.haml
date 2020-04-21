@@ -1,0 +1,46 @@
+%h1 フィードバック一覧
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th
+      %th
+      %th
+      %th
+      %th
+
+  %tbody
+    - @lesson_feedbacks.each do |lesson_feedback|
+      %tr
+        %td
+          = link_to "##{lesson_feedback.id}", lesson_feedback_path(lesson_feedback)
+        %td
+          = lesson_feedback.lesson.summary
+        %td
+          = lesson_feedback.content
+        %td
+          = l(lesson_feedback.created_at, format: :short_jp)
+        %td
+          = link_to '編集', edit_lesson_feedback_path(lesson_feedback)
+          \|
+          = link_to '削除', lesson_feedback_path(lesson_feedback), method: :delete, data: { confirm: '削除してよろしいですか？' }
+%br
+
+%h1 フィードバック可能なレッスン
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th
+      %th
+      %th
+
+  %tbody
+    - @reservations.each do |reservation|
+      - unless reservation.lesson.feedback
+        %tr
+          %td
+            = reservation.lesson.summary
+          %td
+            = link_to 'フィードバックする', new_lesson_feedback_path({ reservation_id: reservation.id })
+            = link_to '申し送りを追加', new_teachers_lesson_report_path(reservation.lesson)

@@ -1,0 +1,9 @@
+.card
+  .card-header
+    = "#{@lesson_feedback.lesson.summary} のフィードバック"
+  .card-body
+    = @lesson_feedback.content
+
+= link_to '編集', edit_lesson_feedback_path(@lesson_feedback)
+\|
+= link_to 'もどる', lesson_feedbacks_path
