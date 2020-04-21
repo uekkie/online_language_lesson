@@ -15,9 +15,7 @@ class Lesson < ApplicationRecord
     joins(:language).where("languages.name = ?", language_name)
   }
   scope :reserved, -> {
-    Lesson.where(
-        id: Reservation.where(lesson_id: self.pluck(:id)).pluck(:id)
-    )
+    joins(:reservation)
   }
 
   validates :zoom_url, :date, :hour, presence: true
