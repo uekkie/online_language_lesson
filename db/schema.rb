@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_27_045308) do
+ActiveRecord::Schema.define(version: 2020_04_21_124919) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2020_03_27_045308) do
     t.integer "number", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "expire_at", default: "2040-04-21 12:51:35", null: false
     t.index ["user_id"], name: "index_coupon_balances_on_user_id"
   end
 

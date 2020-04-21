@@ -41,12 +41,26 @@ class User < ApplicationRecord
     false
   end
 
+  def subscribe(customer, plan)
+    Stripe::Charge.create(
+        :customer => customer.id,
+        :amount => plan.price,
+        :description => "Onlineレッスン定期チケット #{plan.name}",
+        :currency => "jpy"
+    )
+    self.plan_balances.create(number: plan.number, expire_at: 30.days.since)
+    true
+  rescue Stripe::CardError => e
+    flash[:error] = e.message
+    false
+  end
+
   def coupon_balance_empty?
     calc_coupon_balance == 0
   end
 
   def calc_coupon_balance
-    coupon_balances.sum(:number)
+    coupon_balances.available.sum(:number)
   end
 
 end
