@@ -1,0 +1,36 @@
+-# frozen_string_literal: true
+= simple_form_for(@reservation, url:users_reservations_path) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  .form-inputs
+    = f.input :lesson_id, as: :hidden, input_html: {value: @lesson.id}
+    %h3 予約の確認
+
+    %p 以下のレッスンを予約します。
+
+    %table.table.table-striped
+      %thead
+        %th 言語
+        %th 日時
+        %th 講師
+      %tbody
+        %tr
+          %td
+            = @lesson.language.name
+          %td
+            = @lesson.start_at
+          %td
+            = @lesson.teacher.name
+
+  .form-actions
+    - if current_user.coupon_balance_empty?
+      %p{ class: 'btn btn-secondary'}  予約する
+      %p
+        チケット残高がありません。
+        = link_to 'チケットを購入', new_users_charge_path
+        してください。
+    - else
+      %p
+        = "チケットを1消費します。（#{current_user.calc_coupon_balance}→#{current_user.calc_coupon_balance-1}）"
+      = f.button :submit, "予約する", class: 'btn btn-primary'

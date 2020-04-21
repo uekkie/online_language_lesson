@@ -8,8 +8,10 @@
     = stylesheet_pack_tag 'application'
     = javascript_pack_tag 'application'
   %body
-
-    %p.notice= notice
-    %p.alert= alert
-    .container
+    = render "layouts/header"
+    .container.mt-3
+      - if alert
+        %p.alert.alert-danger= alert
+      - elsif notice
+        %p.alert.alert-success= notice
       = yield

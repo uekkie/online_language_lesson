@@ -1,0 +1,20 @@
+%h1 レッスン選択
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th 言語
+      %th 時間
+      %th 講師
+      %th
+
+  %tbody
+    - @lessons.each do |lesson|
+      %tr
+        %td= lesson.language.name
+        %td= lesson.start_at
+        %td= lesson.teacher.name
+
+        %td
+          = link_to '予約にすすむ', new_users_reservation_path({params: {lesson_id: lesson.id}})
+

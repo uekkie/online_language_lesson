@@ -1,0 +1,22 @@
+%h1 講師の管理
+
+%table.table.table-striped.teachers
+  %thead
+    %tr
+      %th 講師名
+      %th 登録日
+      %th
+
+  %tbody
+    - @teachers.each do |teacher|
+      %tr
+        %td= teacher.name
+        %td= l(teacher.created_at, format: :short_jp)
+        %td
+          = link_to '代理ログイン（講師情報の編集）', masquerade_teacher_path(teacher)
+          \|
+          = link_to '削除', teacher, method: :delete, data: { confirm: '削除してよろしいですか？' }
+
+%br
+
+= link_to '講師の追加', new_teacher_registration_path

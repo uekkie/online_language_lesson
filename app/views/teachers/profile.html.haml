@@ -1,0 +1,14 @@
+#avatar_name
+  %span
+    = link_to @teacher.avatar_url, target: :_blank do
+      = image_tag @teacher.avatar_url(:thumbnail), class: 'rounded img-thumbnail' if @teacher.avatar.present?
+  = @teacher.name
+
+%h4.mt-3 自己紹介
+.introduce.p-2.border= @teacher.introduce
+
+%h4.mt-3 レッスン可能な言語
+
+= render 'teachers/languages/language_list', languages: @teacher.languages
+
+= link_to '教えられる言語を追加', new_teachers_language_path

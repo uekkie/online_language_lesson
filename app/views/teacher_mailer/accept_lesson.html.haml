@@ -1,0 +1,17 @@
+-#担当講師、予約時刻、zoomのURLが記載されたメールが飛ぶこと
+%p
+  = "#{@lesson.teacher.name}様、レッスンの予約が入りました。メールにてご案内させていただきます。"
+
+%table
+  %thead
+    %tr
+      %th 生徒
+      %th 予約時刻
+      %th ZoomのURL
+  %tbody
+    %tr
+      %td= @user.name
+      %td= @lesson.start_at
+      %td
+        = @lesson.zoom_url
+        開始時刻になったらこのURLからアクセスしてください。
