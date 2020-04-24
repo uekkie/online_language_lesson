@@ -49,6 +49,11 @@
       %p
         = "初回無料でレッスンを受講できます！"
       = f.button :submit, "予約する", class: 'btn btn-primary'
-  = link_to '定期チケット購入', new_users_subscription_path
-  でお得に受講できます
+
+  - if current_user.subscription
+    = "現在、#{current_user.subscription.plan_name}を#{current_user.subscription.suspend_status}です。"
+    = "次回のチケット購入日は#{l(current_user.subscription.next_billing_date, format: :short_jp)}です。"
+  - else
+    = link_to '定期チケット購入', new_users_subscription_path
+    でお得に受講できます
 

@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :reports, dependent: :destroy
   has_many :lessons, through: :reservations
 
+  has_one :subscription, dependent: :destroy
   def has_customer_id?
     stripe_customer_id.present?
   end
@@ -49,6 +50,7 @@ class User < ApplicationRecord
         :currency => "jpy"
     )
     self.coupon_balances.create(number: plan.number, expire_at: 30.days.since, period: true)
+    Subscription.create(user: self, plan_id: plan.id, start_at: Date.current)
     true
   rescue Stripe::CardError => e
     flash[:error] = e.message
