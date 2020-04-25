@@ -1,0 +1,13 @@
+%h3 レッスンフィードバック
+
+%table.table.table-striped.lesson_feedback
+  %thead
+    %tr
+      %th レッスン概要
+      %th フィードバックの内容
+
+  %tbody
+    - lesson_feedbacks.includes(:lesson).each do |feedback|
+      %tr
+        %td= feedback.lesson.summary
+        %td= feedback.content

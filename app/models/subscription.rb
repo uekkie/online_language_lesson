@@ -5,8 +5,8 @@ class Subscription < ApplicationRecord
     start_at.since(1.month)
   end
 
-  def plan_name
-    Plan.find(plan_id).name
+  def plan
+    Plan.find(plan_id)
   end
 
   def suspend_status
