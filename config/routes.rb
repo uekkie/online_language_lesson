@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     resources :lessons, only: [:index]
     resources :reservations, only: %i[index new create]
     resources :charges, only: %i[new create]
-    resources :subscriptions, only: %i[new create]
+    resources :subscriptions, only: %i[new create edit update]
   end
 
   namespace :teachers do

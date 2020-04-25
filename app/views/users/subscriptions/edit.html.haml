@@ -1,0 +1,90 @@
+%script{ src: "https://js.stripe.com/v3/" }
+
+%h1 定期決済の変更
+
+%h3 プランの変更
+- if @user.has_customer_id?
+  = form_with model: @user.subscription, url: users_subscription_path, local: true do |f|
+    .form-row
+      = f.hidden_field :update_type, value: "plan"
+      .form-inputs
+        = f.select :plan_id, Plan.all.map { |plan| [plan.name, plan.id] }, {}, {class: 'form-control'}
+    = f.submit 'プランを変更する', class: 'btn btn-success'
+
+%h3 定期決済の休止・再開
+= form_with model: @user.subscription, url: users_subscription_path, local: true do |f|
+  .form-row
+    .form-inputs
+      = f.hidden_field :update_type, value: "suspend"
+      = f.hidden_field :suspend, value: !@user.subscription.suspend
+  - if @user.subscription.suspend
+    = f.submit '定期決済を再開する', class: 'btn btn-success'
+  - else
+    = f.submit '定期決済を休止する', class: 'btn btn-danger'
+
+%h3 クレジットカードの変更
+
+= form_with model: @user.subscription, url: users_subscription_path, id: "payment-form" do |f|
+  .form-row
+    %label{ for:"card-element" }
+      クレジット・デビットカード番号
+    #card-element.mt-1{ style: 'width: 500px' }
+    #card-errors{ role: "alert" }
+    .form-inputs
+      = f.hidden_field :update_type, value: "card"
+  %button.mt-1{class:"btn btn-success"} お支払い
+
+:javascript
+  var stripe = Stripe('#{Rails.configuration.stripe[:publishable_key]}');
+  var elements = stripe.elements();
+  var style = {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+  var card = elements.create('card', {style: style, hidePostalCode: true});
+  card.mount('#card-element');
+
+  card.addEventListener('change', function(event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+
+  var form = document.getElementById('payment-form');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function(result) {
+      if (result.error) {
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+
+  function stripeTokenHandler(token) {
+    var form = document.getElementById('payment-form');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+
+    form.submit();
+  }

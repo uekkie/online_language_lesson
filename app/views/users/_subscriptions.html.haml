@@ -1,6 +1,6 @@
 %h3 定期決済プランの情報
 
-- if @subscription
+- if subscription
   %table.table.table-striped.subscriptions
     %thead
       %tr
@@ -10,9 +10,9 @@
         %th 休止状態
     %tbody
       %tr
-        %td= @subscription.plan.name
-        %td #{@subscription.plan.price}円
-        %td= l(@subscription.next_billing_date, format: :short_jp)
+        %td= subscription.plan.name
+        %td #{subscription.plan.price}円
+        %td= l(subscription.next_billing_date, format: :short_jp)
         %td
-          = @subscription.suspend_status
-          -# = user_subscription
+          = subscription.suspend_status
+  = link_to 'プラン変更', edit_users_subscription_path(subscription)

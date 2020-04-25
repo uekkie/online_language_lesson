@@ -30,6 +30,13 @@ class User < ApplicationRecord
     customer
   end
 
+  def update_stripe_token(stripe_token)
+    return false if self.customer.blank?
+
+    Stripe::Customer.update(self.customer.id, source: stripe_token)
+    true
+  end
+
   def charge(customer, coupon)
     Stripe::Charge.create(
         :customer => customer.id,
@@ -85,6 +92,6 @@ class User < ApplicationRecord
 
   def subscription_expire_at
     return nil if subscription_balance == 0
-    coupon_balances.available.first.expire_at
+    coupon_balances.available.last.expire_at
   end
 end
