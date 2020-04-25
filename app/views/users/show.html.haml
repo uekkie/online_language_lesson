@@ -13,8 +13,11 @@
       %tr
         %td= @subscription.plan_name
         %td= l(@subscription.next_billing_date, format: :short_jp)
-        %td= @subscription.suspend_status
+        %td
+          = @subscription.suspend_status
+          -# = user_subscription
 
+= render 'users/coupon_balance', user: current_user
 
 %table.table.table-striped.lesson_feedback
   %thead

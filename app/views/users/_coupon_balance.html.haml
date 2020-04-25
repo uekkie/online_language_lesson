@@ -1,0 +1,11 @@
+%h3 チケット残高
+.coupon_balance
+  - if user.subscription_balance > 0
+    期限ありチケット:
+    = "#{user.subscription_balance}回"
+    有効期限
+    = l(user.subscription_expire_at, format: :short_jp)
+    まで
+  -if user.infinite_balance > 0
+    無期限チケット:
+    = "#{user.infinite_balance}回"
