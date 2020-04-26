@@ -51,17 +51,17 @@ class User < ApplicationRecord
     false
   end
 
-  def subscribe(customer, plan)
+  def subscribe(plan)
     Stripe::Charge.create(
-        :customer => customer.id,
+        :customer => self.stripe_customer_id,
         :amount => plan.price,
         :description => "Onlineレッスン定期チケット #{plan.name}",
         :currency => "jpy"
     )
     self.coupon_balances.create(number: plan.number, expire_at: 30.days.since, period: true)
 
-    if user.subscription
-      user.subscription.update(plan_id: plan.id, start_at: Date.current)
+    if self.subscription
+      self.subscription.update(plan_id: plan.id, start_at: Date.current)
     else
       Subscription.create(user: self, plan_id: plan.id, start_at: Date.current)
     end

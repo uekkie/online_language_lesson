@@ -5,7 +5,7 @@
     %th 請求金額
     %th 決済日
   %tbody
-    - user.billings.each do |bill|
+    - billings.each do |bill|
       %tr
         %td= bill.plan.name
         %td= "#{bill.plan.price} 円"

@@ -2,5 +2,5 @@
 
 = render 'users/subscriptions', subscription: @subscription
 = render 'users/coupon_balance', user: current_user
-= render 'users/billings', user: current_user
+= render 'users/billings', billings: current_user.billings.recent
 = render 'users/lesson_feedback', lesson_feedbacks: @lesson_feedbacks

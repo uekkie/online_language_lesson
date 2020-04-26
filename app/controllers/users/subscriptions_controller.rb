@@ -8,11 +8,11 @@ class Users::SubscriptionsController < ApplicationController
   def create
     plan = Plan.find(params[:plan_id])
 
-    customer = params[:use_registerd_id].present? ?
-                   current_user.customer :
-                   current_user.attach_customer(params[:stripeToken])
+    if params[:use_registerd_id].blank
+      current_user.attach_customer(params[:stripeToken])
+    end
 
-    if current_user.subscribe(customer, plan)
+    if current_user.subscribe(plan)
       redirect_to users_reservations_url, notice: 'チケットを購入しました'
     else
       redirect_to new_users_charge_path
