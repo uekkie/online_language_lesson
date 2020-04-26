@@ -8,7 +8,7 @@ class Users::SubscriptionsController < ApplicationController
   def create
     plan = Plan.find(params[:plan_id])
 
-    if params[:use_registerd_id].blank
+    if params[:use_registerd_id].blank?
       current_user.attach_customer(params[:stripeToken])
     end
 
