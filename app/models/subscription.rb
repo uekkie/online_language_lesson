@@ -1,5 +1,6 @@
 class Subscription < ApplicationRecord
   belongs_to :user
+  has_many :subscription_coupon_balances, dependent: :destroy
 
   scope :available, -> {
     where(suspend: false)

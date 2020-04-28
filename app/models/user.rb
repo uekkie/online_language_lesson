@@ -58,13 +58,15 @@ class User < ApplicationRecord
         :description => "Onlineレッスン定期チケット #{plan.name}",
         :currency => "jpy"
     )
-    self.coupon_balances.create(number: plan.number, expire_at: 30.days.since, period: true)
+    coupon_balance = self.coupon_balances.create(number: plan.number, expire_at: 30.days.since, period: true)
 
     if self.subscription
       self.subscription.update(plan_id: plan.id, start_at: Date.current)
     else
       Subscription.create(user: self, plan_id: plan.id, start_at: Date.current)
     end
+
+    coupon_balance.subscription_coupon_balances.create(subscription: self.subscription)
 
     self.billings.create(plan_id: plan.id)
 
