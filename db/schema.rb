@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_28_013227) do
+ActiveRecord::Schema.define(version: 2020_05_04_112415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 2020_04_28_013227) do
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "expire_at", default: "2120-04-28 01:33:48", null: false
     t.boolean "period", default: false, null: false
+    t.bigint "subscription_id"
+    t.index ["subscription_id"], name: "index_coupon_balances_on_subscription_id"
     t.index ["user_id"], name: "index_coupon_balances_on_user_id"
   end
 
@@ -135,6 +137,7 @@ ActiveRecord::Schema.define(version: 2020_04_28_013227) do
   end
 
   add_foreign_key "billings", "users"
+  add_foreign_key "coupon_balances", "subscriptions"
   add_foreign_key "coupon_balances", "users"
   add_foreign_key "languages", "teachers"
   add_foreign_key "lesson_feedbacks", "lessons"
