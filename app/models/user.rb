@@ -65,7 +65,7 @@ class User < ApplicationRecord
       Subscription.create(user: self, plan_id: plan.id, start_at: Date.current)
     end
 
-    self.coupon_balances.create(number: plan.number, expire_at: 30.days.since, period: true, subscription: self.subscription)
+    self.coupon_balances.create(number: plan.number, expire_at: 30.days.since, subscription: self.subscription)
     self.billings.create(plan_id: plan.id)
 
     true

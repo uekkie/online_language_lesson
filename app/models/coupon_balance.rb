@@ -6,9 +6,9 @@ class CouponBalance < ApplicationRecord
     where("expire_at > ?", Date.current)
   }
   scope :subscriptions, -> {
-    where(period: true).available
+    where.not(subscription: nil).available
   }
   scope :infinite, -> {
-    where(period: false)
+    where(subscription: nil)
   }
 end

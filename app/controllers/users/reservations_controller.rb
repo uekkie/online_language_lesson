@@ -50,7 +50,7 @@ class Users::ReservationsController < ApplicationController
       raise BadRequest, 'チケット残高がありません' if current_user.coupon_balance_empty?
       if current_user.subscription_balance > 0
         expire_at = current_user.subscription_expire_at
-        current_user.coupon_balances.create(number: -1, period: true, expire_at: expire_at)
+        current_user.coupon_balances.create(number: -1, subscription: current_user.subscription, expire_at: expire_at)
       else
         current_user.coupon_balances.create(number: -1)
       end
