@@ -1,0 +1,18 @@
+%h1 #{@teacher.name}さんの予約率
+
+.table-responsive
+  %table.table.table-bordered
+    %thead
+      %th 月
+      %th 予約数
+      %th レッスン数
+
+    %tbody
+      - @teachers_stats.each do |stat|
+        %tr
+          %td
+            = link_to stat[:month], admins_monthly_graph_daily_graphs_path(@teacher,{params: {date: stat[:date]}})
+          %td
+            = stat[:reserve_count]
+          %td
+            = stat[:lesson_count]
