@@ -10,16 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_27_045308) do
+ActiveRecord::Schema.define(version: 2020_05_04_115452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "billings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "plan_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_billings_on_user_id"
+  end
 
   create_table "coupon_balances", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "number", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "expire_at", default: "2120-05-04 11:36:21", null: false
+    t.bigint "subscription_id"
+    t.index ["subscription_id"], name: "index_coupon_balances_on_subscription_id"
     t.index ["user_id"], name: "index_coupon_balances_on_user_id"
   end
 
@@ -74,6 +85,16 @@ ActiveRecord::Schema.define(version: 2020_03_27_045308) do
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end
 
+  create_table "subscriptions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "plan_id", null: false
+    t.boolean "suspend", default: false, null: false
+    t.datetime "start_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
+  end
+
   create_table "teachers", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
@@ -105,6 +126,8 @@ ActiveRecord::Schema.define(version: 2020_03_27_045308) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "billings", "users"
+  add_foreign_key "coupon_balances", "subscriptions"
   add_foreign_key "coupon_balances", "users"
   add_foreign_key "languages", "teachers"
   add_foreign_key "lesson_feedbacks", "lessons"
@@ -115,4 +138,5 @@ ActiveRecord::Schema.define(version: 2020_03_27_045308) do
   add_foreign_key "reports", "users"
   add_foreign_key "reservations", "lessons"
   add_foreign_key "reservations", "users"
+  add_foreign_key "subscriptions", "users"
 end

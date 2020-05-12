@@ -9,6 +9,9 @@ class User < ApplicationRecord
   has_many :lesson_feedbacks, dependent: :destroy
   has_many :reports, dependent: :destroy
   has_many :lessons, through: :reservations
+  has_many :billings, dependent: :destroy
+
+  has_one :subscription, dependent: :destroy
 
   def has_customer_id?
     stripe_customer_id.present?
@@ -27,6 +30,13 @@ class User < ApplicationRecord
     customer
   end
 
+  def update_stripe_token(stripe_token)
+    return false if self.customer.blank?
+
+    Stripe::Customer.update(self.customer.id, source: stripe_token)
+    true
+  end
+
   def charge(customer, coupon)
     Stripe::Charge.create(
         :customer => customer.id,
@@ -41,12 +51,47 @@ class User < ApplicationRecord
     false
   end
 
+  def subscribe(plan)
+    Stripe::Charge.create(
+        :customer => self.stripe_customer_id,
+        :amount => plan.price,
+        :description => "Onlineレッスン定期チケット #{plan.name}",
+        :currency => "jpy"
+    )
+
+    if self.subscription
+      self.subscription.update(plan_id: plan.id, start_at: Date.current)
+    else
+      Subscription.create(user: self, plan_id: plan.id, start_at: Date.current)
+    end
+
+    self.coupon_balances.create(number: plan.number, expire_at: 30.days.since, subscription: self.subscription)
+    self.billings.create(plan_id: plan.id)
+
+    true
+  rescue Stripe::CardError => e
+    flash[:error] = e.message
+    false
+  end
+
   def coupon_balance_empty?
     calc_coupon_balance == 0
   end
 
   def calc_coupon_balance
-    coupon_balances.sum(:number)
+    coupon_balances.available.sum(:number)
   end
 
+  def subscription_balance
+    coupon_balances.subscriptions.sum(:number)
+  end
+
+  def infinite_balance
+    coupon_balances.infinite.sum(:number)
+  end
+
+  def subscription_expire_at
+    return nil if subscription_balance == 0
+    coupon_balances.available.last.expire_at
+  end
 end

@@ -1,13 +1,6 @@
 %h1 ユーザーページ
 
-%table.table.table-striped.teachers
-  %thead
-    %tr
-      %th レッスン概要
-      %th フィードバックの内容
-
-  %tbody
-    - @lesson_feedbacks.includes(:lesson).each do |feedback|
-      %tr
-        %td= feedback.lesson.summary
-        %td= feedback.content
+= render 'users/subscriptions', subscription: @subscription
+= render 'users/coupon_balance', user: current_user
+= render 'users/billings', billings: current_user.billings.recent
+= render 'users/lesson_feedback', lesson_feedbacks: @lesson_feedbacks

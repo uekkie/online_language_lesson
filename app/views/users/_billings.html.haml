@@ -1,0 +1,12 @@
+%h3 決済履歴
+%table.table.table-striped.billings
+  %thead
+    %th プラン
+    %th 請求金額
+    %th 決済日
+  %tbody
+    - billings.each do |bill|
+      %tr
+        %td= bill.plan.name
+        %td= "#{bill.plan.price} 円"
+        %td= l(bill.created_at, format: :short_jp)
